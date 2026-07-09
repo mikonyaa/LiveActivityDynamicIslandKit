@@ -32,7 +32,3 @@ open LiveActivityDemo.xcodeproj
 ```bash
 swift test
 ```
-
-## Как разобраться новичку
-
-Открой [Docs/AI_STUDY_PROMPT.md](Docs/AI_STUDY_PROMPT.md), скопируй prompt и попроси AI объяснить проект по файлам: что делает каждая модель, view, recipe и WidgetKit configuration.

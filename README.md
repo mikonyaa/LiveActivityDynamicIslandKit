@@ -103,7 +103,6 @@ Docs/
   ARCHITECTURE.md
   CUSTOMIZATION.md
   INTEGRATION.md
-  AI_STUDY_PROMPT.md
 ```
 
 ## Design principles
@@ -113,10 +112,6 @@ Docs/
 - Motion and progress are calm, not decorative.
 - The visual system uses one porcelain palette by default, so the demo stays stable and easy to adapt.
 - The demo data is realistic enough for product work but small enough for beginners to understand.
-
-## Learn the code
-
-If you are new to SwiftUI or ActivityKit, copy the prompt in [Docs/AI_STUDY_PROMPT.md](Docs/AI_STUDY_PROMPT.md) and ask an AI assistant to walk you through the project file by file.
 
 Official Apple references:
 
