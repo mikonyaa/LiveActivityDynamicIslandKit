@@ -9,6 +9,10 @@ struct DemoRootView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     hero
+                    ActivityStatusCard(message: controller.statusMessage)
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
                     ScenarioGalleryView(controller: controller)
                     ScenarioDetailView(controller: controller)
                 }
@@ -16,15 +20,6 @@ struct DemoRootView: View {
                 .padding(.vertical, 24)
             }
             .background(DemoBackground())
-            .overlay(alignment: .top) {
-                if let message = controller.message {
-                    MessageCard(message: message)
-                        .padding(.horizontal, 20)
-                        .padding(.top, 12)
-                        .allowsHitTesting(false)
-                        .transition(.opacity)
-                }
-            }
             .navigationTitle("Live Activity Kit")
         }
     }
@@ -50,13 +45,15 @@ struct DemoBackground: View {
     }
 }
 
-struct MessageCard: View {
+struct ActivityStatusCard: View {
     var message: DemoMessage
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            Image(systemName: message.style == .success ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
-                .foregroundStyle(message.style == .success ? .green : .orange)
+            Image(systemName: message.style.symbolName)
+                .foregroundStyle(message.style.tint)
+                .font(.title3.weight(.semibold))
+                .frame(width: 24, height: 24)
             VStack(alignment: .leading, spacing: 3) {
                 Text(message.title)
                     .font(.subheadline.weight(.semibold))
@@ -69,8 +66,8 @@ struct MessageCard: View {
         .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(.background.opacity(0.94))
-                .shadow(color: .black.opacity(0.12), radius: 24, y: 12)
+                .fill(.background.opacity(0.82))
+                .shadow(color: .black.opacity(0.08), radius: 20, y: 10)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)

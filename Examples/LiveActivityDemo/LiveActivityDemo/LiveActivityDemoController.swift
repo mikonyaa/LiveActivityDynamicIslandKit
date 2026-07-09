@@ -36,6 +36,14 @@ final class LiveActivityDemoController {
         ActivityAuthorizationInfo().areActivitiesEnabled
     }
 
+    var statusMessage: DemoMessage {
+        message ?? DemoMessage(
+            title: "Ready for local preview",
+            detail: "Choose a recipe, press Start, then check the Lock Screen or Dynamic Island.",
+            style: .neutral
+        )
+    }
+
     func select(_ scenario: LiveActivityScenario) {
         withTransaction(Transaction(animation: nil)) {
             selectedScenario = scenario
@@ -75,8 +83,6 @@ final class LiveActivityDemoController {
         await endActivity(showMessage: false)
 
         do {
-            let startIndex = min(1, selectedRecipe.states.count - 1)
-            selectedStateIndex = startIndex
             let model = currentModel.liveTimelineSnapshot()
             let attributes = LiveActivityAttributes(
                 scenario: model.scenario,
@@ -155,8 +161,31 @@ final class LiveActivityDemoController {
 
 struct DemoMessage: Identifiable, Equatable {
     enum Style {
+        case neutral
         case success
         case warning
+
+        var symbolName: String {
+            switch self {
+            case .neutral:
+                "sparkles"
+            case .success:
+                "checkmark.circle.fill"
+            case .warning:
+                "exclamationmark.triangle.fill"
+            }
+        }
+
+        var tint: Color {
+            switch self {
+            case .neutral:
+                .blue
+            case .success:
+                .green
+            case .warning:
+                .orange
+            }
+        }
     }
 
     let id = UUID()
