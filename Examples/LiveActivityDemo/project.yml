@@ -1,0 +1,99 @@
+name: LiveActivityDemo
+
+options:
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+configs:
+  Debug: debug
+  Release: release
+
+packages:
+  LiveActivityDynamicIslandKit:
+    path: ../..
+
+settings:
+  base:
+    CLANG_ENABLE_MODULES: YES
+    DEVELOPMENT_TEAM: ""
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    SDKROOT: iphoneos
+    SWIFT_VERSION: "6.0"
+
+targets:
+  LiveActivityDemo:
+    type: application
+    platform: iOS
+    sources:
+      - path: LiveActivityDemo
+    dependencies:
+      - target: LiveActivityDemoWidgets
+        embed: true
+      - package: LiveActivityDynamicIslandKit
+        product: LiveActivityKit
+    info:
+      path: LiveActivityDemo/Info.plist
+      properties:
+        CFBundleDisplayName: Live Activity Demo
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleURLTypes:
+          - CFBundleURLName: LiveActivityDemo
+            CFBundleURLSchemes:
+              - liveactivitydemo
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSRequiresIPhoneOS: true
+        NSSupportsLiveActivities: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UIApplicationSupportsIndirectInputEvents: true
+        UILaunchScreen: {}
+    settings:
+      base:
+        CODE_SIGN_STYLE: Automatic
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: LiveActivityDemo/Info.plist
+        MARKETING_VERSION: "0.1.0"
+        PRODUCT_BUNDLE_IDENTIFIER: dev.liquidglasstemplates.liveactivity.demo
+        PRODUCT_NAME: "$(TARGET_NAME)"
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        SUPPORTS_MACCATALYST: NO
+        TARGETED_DEVICE_FAMILY: "1,2"
+    scheme:
+      configVariants: []
+      gatherCoverageData: false
+
+  LiveActivityDemoWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: LiveActivityDemoWidgets
+    dependencies:
+      - package: LiveActivityDynamicIslandKit
+        product: LiveActivityKit
+    info:
+      path: LiveActivityDemoWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Live Activity Demo Widgets
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+        NSSupportsLiveActivities: true
+    settings:
+      base:
+        APPLICATION_EXTENSION_API_ONLY: YES
+        CODE_SIGN_STYLE: Automatic
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: LiveActivityDemoWidgets/Info.plist
+        MARKETING_VERSION: "0.1.0"
+        PRODUCT_BUNDLE_IDENTIFIER: dev.liquidglasstemplates.liveactivity.demo.widgets
+        PRODUCT_NAME: "$(TARGET_NAME)"
+        SKIP_INSTALL: YES
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        SUPPORTS_MACCATALYST: NO
+        TARGETED_DEVICE_FAMILY: "1,2"

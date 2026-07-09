@@ -1,0 +1,511 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		023C90F1A14EA9376D98034C /* LiveActivityDemoWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727EE60955F4A9DE01F693D9 /* LiveActivityDemoWidgets.swift */; };
+		0CD37ADC4F411CD0CC5A573A /* ScenarioDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF46EED93FC62A7D551F4D3 /* ScenarioDetailView.swift */; };
+		17540E9001B6B39B1E99A921 /* LiveActivityDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91257F599936E0674F43893D /* LiveActivityDemoController.swift */; };
+		189AAFDCDDFB23DCBD78259F /* LiveActivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = FD4043A6BEF2403E912F0F00 /* LiveActivityKit */; };
+		1D89C8ECE08753CC700FFD29 /* LiveActivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7E18736574C0553469699532 /* LiveActivityKit */; };
+		54440DB423D3EE0F789F2ABD /* LiveActivityDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB53EDB53A6046245B404D /* LiveActivityDemoApp.swift */; };
+		9C71478015F8898CC5121E18 /* LiveActivityDemoWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D773796F07069BAC6FE2205E /* DemoRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D89FBA1EDA755A5AB64B15 /* DemoRootView.swift */; };
+		EFE51639C4BDE47B4945FBA4 /* ScenarioGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2C679BB5E9C958F122BF03 /* ScenarioGalleryView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		65BBA2BBBC3471F7009F349D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7B383841038C155273E9710 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46C79C35C67EBCA2A064D360;
+			remoteInfo = LiveActivityDemoWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E3E1E7BB4468603F40314310 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9C71478015F8898CC5121E18 /* LiveActivityDemoWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1F2C679BB5E9C958F122BF03 /* ScenarioGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioGalleryView.swift; sourceTree = "<group>"; };
+		57D89FBA1EDA755A5AB64B15 /* DemoRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoRootView.swift; sourceTree = "<group>"; };
+		6CF46EED93FC62A7D551F4D3 /* ScenarioDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioDetailView.swift; sourceTree = "<group>"; };
+		727EE60955F4A9DE01F693D9 /* LiveActivityDemoWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoWidgets.swift; sourceTree = "<group>"; };
+		91257F599936E0674F43893D /* LiveActivityDemoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoController.swift; sourceTree = "<group>"; };
+		9E1B718121D93B7098DD5F09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B706C64B2614FF644649039E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B7EB53EDB53A6046245B404D /* LiveActivityDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoApp.swift; sourceTree = "<group>"; };
+		DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LiveActivityDynamicIslandKit; path = ../..; sourceTree = SOURCE_ROOT; };
+		FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LiveActivityDemoWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFA637C66D036DE0FA517C35 /* LiveActivityDemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LiveActivityDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		61B90E7DCB4ECA966380BC2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D89C8ECE08753CC700FFD29 /* LiveActivityKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1C1B09E6801E81B6E0751FE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				189AAFDCDDFB23DCBD78259F /* LiveActivityKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0DED0C5533D3BB65D5C83C0E /* LiveActivityDemoWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				9E1B718121D93B7098DD5F09 /* Info.plist */,
+				727EE60955F4A9DE01F693D9 /* LiveActivityDemoWidgets.swift */,
+			);
+			path = LiveActivityDemoWidgets;
+			sourceTree = "<group>";
+		};
+		8D1D942B49F596656E14FA1D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFA637C66D036DE0FA517C35 /* LiveActivityDemo.app */,
+				FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8F735F39DB326CFAF2D47CCB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		9103EC39D90006B50EB00BF2 /* LiveActivityDemo */ = {
+			isa = PBXGroup;
+			children = (
+				57D89FBA1EDA755A5AB64B15 /* DemoRootView.swift */,
+				B706C64B2614FF644649039E /* Info.plist */,
+				B7EB53EDB53A6046245B404D /* LiveActivityDemoApp.swift */,
+				91257F599936E0674F43893D /* LiveActivityDemoController.swift */,
+				6CF46EED93FC62A7D551F4D3 /* ScenarioDetailView.swift */,
+				1F2C679BB5E9C958F122BF03 /* ScenarioGalleryView.swift */,
+			);
+			path = LiveActivityDemo;
+			sourceTree = "<group>";
+		};
+		DA2AA14788B6B720B4FC7335 = {
+			isa = PBXGroup;
+			children = (
+				9103EC39D90006B50EB00BF2 /* LiveActivityDemo */,
+				0DED0C5533D3BB65D5C83C0E /* LiveActivityDemoWidgets */,
+				8F735F39DB326CFAF2D47CCB /* Packages */,
+				8D1D942B49F596656E14FA1D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		46C79C35C67EBCA2A064D360 /* LiveActivityDemoWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE8C8480D5CB15AA9AD73D56 /* Build configuration list for PBXNativeTarget "LiveActivityDemoWidgets" */;
+			buildPhases = (
+				BB87F8C3BAB920028D1E0647 /* Sources */,
+				61B90E7DCB4ECA966380BC2C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LiveActivityDemoWidgets;
+			packageProductDependencies = (
+				7E18736574C0553469699532 /* LiveActivityKit */,
+			);
+			productName = LiveActivityDemoWidgets;
+			productReference = FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		667B5C63379F5C7A66E10AFE /* LiveActivityDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D4F32AF6068C80CCA1BD3A5 /* Build configuration list for PBXNativeTarget "LiveActivityDemo" */;
+			buildPhases = (
+				02194B36824FA2499F69F9C6 /* Sources */,
+				B1C1B09E6801E81B6E0751FE /* Frameworks */,
+				E3E1E7BB4468603F40314310 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D472C078CBE94502F4261BB3 /* PBXTargetDependency */,
+			);
+			name = LiveActivityDemo;
+			packageProductDependencies = (
+				FD4043A6BEF2403E912F0F00 /* LiveActivityKit */,
+			);
+			productName = LiveActivityDemo;
+			productReference = FFA637C66D036DE0FA517C35 /* LiveActivityDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C7B383841038C155273E9710 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					46C79C35C67EBCA2A064D360 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					667B5C63379F5C7A66E10AFE = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 34C2D7B25DF2B10A6EEABFD6 /* Build configuration list for PBXProject "LiveActivityDemo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = DA2AA14788B6B720B4FC7335;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6DFD68B907560EEE8CB5B1CD /* XCLocalSwiftPackageReference "../.." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8D1D942B49F596656E14FA1D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				667B5C63379F5C7A66E10AFE /* LiveActivityDemo */,
+				46C79C35C67EBCA2A064D360 /* LiveActivityDemoWidgets */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02194B36824FA2499F69F9C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D773796F07069BAC6FE2205E /* DemoRootView.swift in Sources */,
+				54440DB423D3EE0F789F2ABD /* LiveActivityDemoApp.swift in Sources */,
+				17540E9001B6B39B1E99A921 /* LiveActivityDemoController.swift in Sources */,
+				0CD37ADC4F411CD0CC5A573A /* ScenarioDetailView.swift in Sources */,
+				EFE51639C4BDE47B4945FBA4 /* ScenarioGalleryView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB87F8C3BAB920028D1E0647 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				023C90F1A14EA9376D98034C /* LiveActivityDemoWidgets.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D472C078CBE94502F4261BB3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46C79C35C67EBCA2A064D360 /* LiveActivityDemoWidgets */;
+			targetProxy = 65BBA2BBBC3471F7009F349D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		001468FD1037F2322DCA03AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LiveActivityDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.liquidglasstemplates.liveactivity.demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2C4407B65582FADD30F15CEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LiveActivityDemoWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.liquidglasstemplates.liveactivity.demo.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		68620C798D9513BA80462509 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		981754235C68A0113F4B899C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LiveActivityDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.liquidglasstemplates.liveactivity.demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B08D04193A8E744BC45791ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		D1380D0A4455E803EFCE1C88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LiveActivityDemoWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.liquidglasstemplates.liveactivity.demo.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		34C2D7B25DF2B10A6EEABFD6 /* Build configuration list for PBXProject "LiveActivityDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B08D04193A8E744BC45791ED /* Debug */,
+				68620C798D9513BA80462509 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8D4F32AF6068C80CCA1BD3A5 /* Build configuration list for PBXNativeTarget "LiveActivityDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				001468FD1037F2322DCA03AE /* Debug */,
+				981754235C68A0113F4B899C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CE8C8480D5CB15AA9AD73D56 /* Build configuration list for PBXNativeTarget "LiveActivityDemoWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C4407B65582FADD30F15CEA /* Debug */,
+				D1380D0A4455E803EFCE1C88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		6DFD68B907560EEE8CB5B1CD /* XCLocalSwiftPackageReference "../.." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7E18736574C0553469699532 /* LiveActivityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LiveActivityKit;
+		};
+		FD4043A6BEF2403E912F0F00 /* LiveActivityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LiveActivityKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C7B383841038C155273E9710 /* Project object */;
+}

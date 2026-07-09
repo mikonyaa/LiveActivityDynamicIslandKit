@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  package:
+    name: Swift Package
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test package
+        run: swift test
+
+  demo:
+    name: Demo App
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build demo
+        run: |
+          xcodebuild \
+            -project Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj \
+            -scheme LiveActivityDemo \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
