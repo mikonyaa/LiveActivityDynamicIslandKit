@@ -1,11 +1,12 @@
 import Foundation
+import LiveActivityKit
 
-public struct LiveActivityRecipe: Identifiable, Hashable, Sendable {
-    public var id: LiveActivityScenario { scenario }
-    public var scenario: LiveActivityScenario
-    public var states: [LiveActivityContentModel]
+struct LiveActivityRecipe: Identifiable, Hashable, Sendable {
+    var id: LiveActivityScenario { scenario }
+    var scenario: LiveActivityScenario
+    var states: [LiveActivityContentModel]
 
-    public init(
+    init(
         scenario: LiveActivityScenario,
         states: [LiveActivityContentModel]
     ) {
@@ -13,13 +14,13 @@ public struct LiveActivityRecipe: Identifiable, Hashable, Sendable {
         self.states = states
     }
 
-    public var firstState: LiveActivityContentModel {
-        states[0]
+    var firstState: LiveActivityContentModel? {
+        states.first
     }
 }
 
-public enum LiveActivityRecipes {
-    public static var all: [LiveActivityRecipe] {
+enum LiveActivityRecipes {
+    static var all: [LiveActivityRecipe] {
         [
             delivery,
             ride,
@@ -30,16 +31,19 @@ public enum LiveActivityRecipes {
         ]
     }
 
-    public static func recipe(for scenario: LiveActivityScenario) -> LiveActivityRecipe {
+    static func recipe(for scenario: LiveActivityScenario) -> LiveActivityRecipe {
         all.first { $0.scenario == scenario } ?? delivery
     }
 
-    public static func state(
+    static func state(
         for scenario: LiveActivityScenario,
         index: Int
     ) -> LiveActivityContentModel {
         let recipe = recipe(for: scenario)
-        guard !recipe.states.isEmpty else { return delivery.firstState }
+        guard let fallback = delivery.firstState else {
+            preconditionFailure("The delivery demo recipe must contain at least one state.")
+        }
+        guard !recipe.states.isEmpty else { return fallback }
         let safeIndex = min(max(index, 0), recipe.states.count - 1)
         return recipe.states[safeIndex]
     }

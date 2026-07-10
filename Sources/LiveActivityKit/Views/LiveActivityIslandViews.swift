@@ -8,10 +8,10 @@ public struct LiveActivityCompactLeadingView: View {
     }
 
     public var body: some View {
-        Image(systemName: model.scenario.systemImage)
+        Image(systemName: model.symbolName)
             .font(.system(size: 14, weight: .bold))
             .foregroundStyle(model.accent.color)
-            .accessibilityLabel(model.scenario.title)
+            .accessibilityLabel(model.accessibilityTitle)
     }
 }
 
@@ -51,7 +51,7 @@ public struct LiveActivityMinimalView: View {
                     style: StrokeStyle(lineWidth: 2.5, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
-            Image(systemName: model.scenario.systemImage)
+            Image(systemName: model.symbolName)
                 .font(.system(size: 9, weight: .bold))
                 .foregroundStyle(model.accent.color)
         }
@@ -78,7 +78,7 @@ public struct LiveActivityExpandedIslandView: View {
 
         VStack(alignment: .leading, spacing: 7) {
             HStack(spacing: 10) {
-                Image(systemName: model.scenario.systemImage)
+                Image(systemName: model.symbolName)
                     .font(.system(size: 13, weight: .bold))
                     .foregroundStyle(palette.accent)
                     .frame(width: 28, height: 28)

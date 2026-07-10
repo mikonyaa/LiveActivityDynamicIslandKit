@@ -28,7 +28,7 @@ struct ScenarioDetailView: View {
 
     private var header: some View {
         HStack(alignment: .top, spacing: 14) {
-            Image(systemName: controller.currentModel.scenario.systemImage)
+            Image(systemName: controller.currentModel.symbolName)
                 .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(controller.currentModel.accent.color)
                 .frame(width: 46, height: 46)

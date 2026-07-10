@@ -85,7 +85,7 @@ final class LiveActivityDemoController {
         do {
             let model = currentModel.liveTimelineSnapshot()
             let attributes = LiveActivityAttributes(
-                scenario: model.scenario,
+                scenario: selectedScenario,
                 activityID: model.id
             )
             let activity = try Activity.request(

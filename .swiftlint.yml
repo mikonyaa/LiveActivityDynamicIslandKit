@@ -1,0 +1,9 @@
+excluded:
+  - .build
+  - .swiftpm
+
+line_length:
+  warning: 160
+  error: 200
+
+reporter: xcode

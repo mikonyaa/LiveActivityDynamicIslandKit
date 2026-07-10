@@ -12,10 +12,16 @@
 		17540E9001B6B39B1E99A921 /* LiveActivityDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91257F599936E0674F43893D /* LiveActivityDemoController.swift */; };
 		189AAFDCDDFB23DCBD78259F /* LiveActivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = FD4043A6BEF2403E912F0F00 /* LiveActivityKit */; };
 		1D89C8ECE08753CC700FFD29 /* LiveActivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7E18736574C0553469699532 /* LiveActivityKit */; };
+		31B9FFBE61A0F7F932BB3BE6 /* LiveActivityRecipeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4E79DAE30FF6D343B2B8BF /* LiveActivityRecipeData.swift */; };
 		54440DB423D3EE0F789F2ABD /* LiveActivityDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB53EDB53A6046245B404D /* LiveActivityDemoApp.swift */; };
+		5475F6C3FA2CCEE46D974CB3 /* LiveActivityScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489A2912D7FDB8A6945690E /* LiveActivityScenario.swift */; };
+		6656D96F4F710EDAE0C90DF8 /* LiveActivityRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF4816BD63AA40362CCA9B6 /* LiveActivityRecipe.swift */; };
 		9C71478015F8898CC5121E18 /* LiveActivityDemoWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B0E371ACEDB73BE1B51030AB /* LiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421207ECF4F2DE9CA79D59A2 /* LiveActivityAttributes.swift */; };
+		B36667478FFC922765CA90B7 /* LiveActivityScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489A2912D7FDB8A6945690E /* LiveActivityScenario.swift */; };
 		D773796F07069BAC6FE2205E /* DemoRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D89FBA1EDA755A5AB64B15 /* DemoRootView.swift */; };
 		EFE51639C4BDE47B4945FBA4 /* ScenarioGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2C679BB5E9C958F122BF03 /* ScenarioGalleryView.swift */; };
+		FBE56A24550824D700E9EFA8 /* LiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421207ECF4F2DE9CA79D59A2 /* LiveActivityAttributes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,8 @@
 
 /* Begin PBXFileReference section */
 		1F2C679BB5E9C958F122BF03 /* ScenarioGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioGalleryView.swift; sourceTree = "<group>"; };
+		421207ECF4F2DE9CA79D59A2 /* LiveActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityAttributes.swift; sourceTree = "<group>"; };
+		4AF4816BD63AA40362CCA9B6 /* LiveActivityRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityRecipe.swift; sourceTree = "<group>"; };
 		57D89FBA1EDA755A5AB64B15 /* DemoRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoRootView.swift; sourceTree = "<group>"; };
 		6CF46EED93FC62A7D551F4D3 /* ScenarioDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioDetailView.swift; sourceTree = "<group>"; };
 		727EE60955F4A9DE01F693D9 /* LiveActivityDemoWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoWidgets.swift; sourceTree = "<group>"; };
@@ -51,7 +59,9 @@
 		9E1B718121D93B7098DD5F09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B706C64B2614FF644649039E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B7EB53EDB53A6046245B404D /* LiveActivityDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoApp.swift; sourceTree = "<group>"; };
-		DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LiveActivityDynamicIslandKit; path = ../..; sourceTree = SOURCE_ROOT; };
+		D489A2912D7FDB8A6945690E /* LiveActivityScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityScenario.swift; sourceTree = "<group>"; };
+		DDB704BB17DCE83F71C5D39A /* live-activity-hardening */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "live-activity-hardening"; path = ../..; sourceTree = SOURCE_ROOT; };
+		EF4E79DAE30FF6D343B2B8BF /* LiveActivityRecipeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityRecipeData.swift; sourceTree = "<group>"; };
 		FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LiveActivityDemoWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFA637C66D036DE0FA517C35 /* LiveActivityDemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LiveActivityDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -85,6 +95,15 @@
 			path = LiveActivityDemoWidgets;
 			sourceTree = "<group>";
 		};
+		811A8914BD37498816A7BDBB /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				421207ECF4F2DE9CA79D59A2 /* LiveActivityAttributes.swift */,
+				D489A2912D7FDB8A6945690E /* LiveActivityScenario.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		8D1D942B49F596656E14FA1D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,7 +116,7 @@
 		8F735F39DB326CFAF2D47CCB /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */,
+				DDB704BB17DCE83F71C5D39A /* live-activity-hardening */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -109,6 +128,8 @@
 				B706C64B2614FF644649039E /* Info.plist */,
 				B7EB53EDB53A6046245B404D /* LiveActivityDemoApp.swift */,
 				91257F599936E0674F43893D /* LiveActivityDemoController.swift */,
+				4AF4816BD63AA40362CCA9B6 /* LiveActivityRecipe.swift */,
+				EF4E79DAE30FF6D343B2B8BF /* LiveActivityRecipeData.swift */,
 				6CF46EED93FC62A7D551F4D3 /* ScenarioDetailView.swift */,
 				1F2C679BB5E9C958F122BF03 /* ScenarioGalleryView.swift */,
 			);
@@ -121,6 +142,7 @@
 				9103EC39D90006B50EB00BF2 /* LiveActivityDemo */,
 				0DED0C5533D3BB65D5C83C0E /* LiveActivityDemoWidgets */,
 				8F735F39DB326CFAF2D47CCB /* Packages */,
+				811A8914BD37498816A7BDBB /* Shared */,
 				8D1D942B49F596656E14FA1D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -216,8 +238,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D773796F07069BAC6FE2205E /* DemoRootView.swift in Sources */,
+				FBE56A24550824D700E9EFA8 /* LiveActivityAttributes.swift in Sources */,
 				54440DB423D3EE0F789F2ABD /* LiveActivityDemoApp.swift in Sources */,
 				17540E9001B6B39B1E99A921 /* LiveActivityDemoController.swift in Sources */,
+				6656D96F4F710EDAE0C90DF8 /* LiveActivityRecipe.swift in Sources */,
+				31B9FFBE61A0F7F932BB3BE6 /* LiveActivityRecipeData.swift in Sources */,
+				5475F6C3FA2CCEE46D974CB3 /* LiveActivityScenario.swift in Sources */,
 				0CD37ADC4F411CD0CC5A573A /* ScenarioDetailView.swift in Sources */,
 				EFE51639C4BDE47B4945FBA4 /* ScenarioGalleryView.swift in Sources */,
 			);
@@ -227,7 +253,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0E371ACEDB73BE1B51030AB /* LiveActivityAttributes.swift in Sources */,
 				023C90F1A14EA9376D98034C /* LiveActivityDemoWidgets.swift in Sources */,
+				B36667478FFC922765CA90B7 /* LiveActivityScenario.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

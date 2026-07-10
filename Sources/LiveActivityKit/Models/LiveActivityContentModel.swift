@@ -2,7 +2,10 @@ import Foundation
 
 public struct LiveActivityContentModel: Codable, Hashable, Identifiable, Sendable {
     public var id: String
-    public var scenario: LiveActivityScenario
+    /// The SF Symbol rendered by the reusable Lock Screen and Dynamic Island views.
+    public var symbolName: String
+    /// A short, app-provided description of the activity for assistive technologies.
+    public var accessibilityTitle: String
     public var phase: LiveActivityPhase
     public var title: String
     public var subtitle: String
@@ -17,7 +20,8 @@ public struct LiveActivityContentModel: Codable, Hashable, Identifiable, Sendabl
 
     public init(
         id: String,
-        scenario: LiveActivityScenario,
+        symbolName: String,
+        accessibilityTitle: String,
         phase: LiveActivityPhase,
         title: String,
         subtitle: String,
@@ -31,7 +35,8 @@ public struct LiveActivityContentModel: Codable, Hashable, Identifiable, Sendabl
         accent: LiveActivityAccent
     ) {
         self.id = id
-        self.scenario = scenario
+        self.symbolName = symbolName
+        self.accessibilityTitle = accessibilityTitle
         self.phase = phase
         self.title = title
         self.subtitle = subtitle
@@ -47,7 +52,7 @@ public struct LiveActivityContentModel: Codable, Hashable, Identifiable, Sendabl
 
     public var accessibilitySummary: String {
         [
-            scenario.title,
+            accessibilityTitle,
             title,
             subtitle,
             primaryValue,
@@ -77,7 +82,7 @@ public struct LiveActivityContentModel: Codable, Hashable, Identifiable, Sendabl
 }
 
 public struct LiveActivityProgress: Codable, Hashable, Sendable {
-    public var fraction: Double
+    public private(set) var fraction: Double
     public var label: String
     public var isIndeterminate: Bool
 
@@ -89,6 +94,28 @@ public struct LiveActivityProgress: Codable, Hashable, Sendable {
         self.fraction = min(max(fraction, 0), 1)
         self.label = label
         self.isIndeterminate = isIndeterminate
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case fraction
+        case label
+        case isIndeterminate
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            fraction: try container.decode(Double.self, forKey: .fraction),
+            label: try container.decode(String.self, forKey: .label),
+            isIndeterminate: try container.decode(Bool.self, forKey: .isIndeterminate)
+        )
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(fraction, forKey: .fraction)
+        try container.encode(label, forKey: .label)
+        try container.encode(isIndeterminate, forKey: .isIndeterminate)
     }
 }
 
@@ -105,19 +132,5 @@ public struct LiveActivityTimeline: Codable, Hashable, Sendable {
         self.startedAt = startedAt
         self.estimatedEnd = estimatedEnd
         self.remainingText = remainingText
-    }
-}
-
-public struct LiveActivityDeepLink: Codable, Hashable, Sendable {
-    public var scenario: LiveActivityScenario
-    public var stateID: String
-
-    public init(scenario: LiveActivityScenario, stateID: String) {
-        self.scenario = scenario
-        self.stateID = stateID
-    }
-
-    public var url: URL {
-        URL(string: "liveactivitydemo://scenario/\(scenario.rawValue)?state=\(stateID)")!
     }
 }

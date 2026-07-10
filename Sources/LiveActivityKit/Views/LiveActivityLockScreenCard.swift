@@ -83,7 +83,7 @@ public struct LiveActivityLockScreenCard: View {
     }
 
     private func symbol(palette: LiveActivityPalette) -> some View {
-        Image(systemName: model.scenario.systemImage)
+        Image(systemName: model.symbolName)
             .font(.system(size: 16, weight: .bold))
             .foregroundStyle(palette.accent)
             .frame(width: 36, height: 36)

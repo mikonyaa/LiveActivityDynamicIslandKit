@@ -1,7 +1,11 @@
 import Foundation
+import LiveActivityKit
+
+// The compact fixture rows are intentionally optimized for side-by-side state comparison.
+// swiftlint:disable line_length function_parameter_count
 
 extension LiveActivityRecipes {
-    public static var delivery: LiveActivityRecipe {
+    static var delivery: LiveActivityRecipe {
         LiveActivityRecipe(
             scenario: .delivery,
             states: [
@@ -13,7 +17,7 @@ extension LiveActivityRecipes {
         )
     }
 
-    public static var ride: LiveActivityRecipe {
+    static var ride: LiveActivityRecipe {
         LiveActivityRecipe(
             scenario: .ride,
             states: [
@@ -25,7 +29,7 @@ extension LiveActivityRecipes {
         )
     }
 
-    public static var timer: LiveActivityRecipe {
+    static var timer: LiveActivityRecipe {
         LiveActivityRecipe(
             scenario: .timer,
             states: [
@@ -37,7 +41,7 @@ extension LiveActivityRecipes {
         )
     }
 
-    public static var sports: LiveActivityRecipe {
+    static var sports: LiveActivityRecipe {
         LiveActivityRecipe(
             scenario: .sports,
             states: [
@@ -49,7 +53,7 @@ extension LiveActivityRecipes {
         )
     }
 
-    public static var download: LiveActivityRecipe {
+    static var download: LiveActivityRecipe {
         LiveActivityRecipe(
             scenario: .download,
             states: [
@@ -61,7 +65,7 @@ extension LiveActivityRecipes {
         )
     }
 
-    public static var trip: LiveActivityRecipe {
+    static var trip: LiveActivityRecipe {
         LiveActivityRecipe(
             scenario: .trip,
             states: [
@@ -92,7 +96,8 @@ extension LiveActivityRecipes {
     ) -> LiveActivityContentModel {
         LiveActivityContentModel(
             id: id,
-            scenario: scenario,
+            symbolName: scenario.systemImage,
+            accessibilityTitle: scenario.title,
             phase: phase,
             title: title,
             subtitle: subtitle,
@@ -107,3 +112,5 @@ extension LiveActivityRecipes {
         )
     }
 }
+
+// swiftlint:enable line_length function_parameter_count

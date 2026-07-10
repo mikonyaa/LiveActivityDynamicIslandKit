@@ -1,27 +1,26 @@
 # Architecture
 
-The kit is split into three layers: state, recipes, and surfaces.
+The repository is split into a reusable rendering package and an app-specific demo.
 
 ## State
 
 `LiveActivityContentModel` is the source of truth for the UI. It contains:
 
-- scenario
+- SF Symbol name and accessibility title supplied by the app
 - phase
 - title and subtitle
 - progress
 - timeline
 - detail rows
-- deep link
 - accessibility summary
 
-`LiveActivityAttributes` wraps that model for ActivityKit. The app uses the same attributes as the widget extension, so both targets speak the same language.
+The package deliberately does not define `ActivityAttributes`. Attribute identity belongs to the integrating app and must be shared with its widget extension.
 
-## Recipes
+## Demo domain
 
-`LiveActivityRecipe` describes one domain scenario and its timeline states. Recipes are intentionally deterministic. That makes the template easy to preview, test, and customize without a backend.
+`LiveActivityRecipe`, `LiveActivityScenario`, `LiveActivityAttributes`, and the URL scheme live under `Examples/LiveActivityDemo`. They are intentionally deterministic so the demo remains useful without turning the package into a closed list of sample businesses.
 
-Replace recipe data first when adapting the template to a real product.
+Replace the demo domain with your own attributes and state mapping when adapting the template.
 
 ## Surfaces
 

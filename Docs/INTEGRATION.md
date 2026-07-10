@@ -2,13 +2,12 @@
 
 ## 1. Add the kit
 
-Use the Swift package or copy `Sources/LiveActivityKit` into your app.
+Use the Swift package or copy `Sources/LiveActivityKit` into your app. Link `LiveActivityKit` to both the app target and widget extension.
 
 If you copy the source, keep the folder split:
 
 ```text
 Models/
-Recipes/
 Views/
 ```
 
@@ -27,9 +26,11 @@ Add this key to the app target Info.plist:
 <true/>
 ```
 
-## 4. Replace recipe data
+## 4. Own the ActivityKit contract
 
-Start with `LiveActivityRecipeData.swift`.
+Define your app's `ActivityAttributes` in a source file shared by the app and widget extension. Keep business identifiers and deep-link routing there; the package only renders `LiveActivityContentModel`.
+
+Use the files in `Examples/LiveActivityDemo/Shared` as a concrete reference, then map each product state into a model with an SF Symbol, accessibility title, content, progress, and accent.
 
 For a real product, keep these rules:
 
@@ -48,7 +49,7 @@ The demo controller shows the local lifecycle:
 
 Before sending content to ActivityKit, convert static/demo timeline data into a live snapshot. `LiveActivityContentModel.liveTimelineSnapshot()` resets `startedAt` to the current time and keeps `staleDate` in the future. If `staleDate` is already in the past, iOS can create the activity and immediately mark it stale, which makes the Dynamic Island and Lock Screen surfaces look like they did not start.
 
-For production, move lifecycle work into a small service or actor that owns the active activity handle.
+For production, move lifecycle work into a small service or actor that owns the active activity handle. The package does not prescribe that service because its lifetime and update source are app-specific.
 
 ## 6. Test on device
 

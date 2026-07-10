@@ -1,15 +1,16 @@
 # Live Activity & Dynamic Island Kit
 
-Шаблон SwiftUI для Live Activities и Dynamic Island: готовые состояния, красивые поверхности, demo app и WidgetKit extension.
+Сфокусированный SwiftUI rendering kit для Live Activities и Dynamic Island с полноценным demo app и WidgetKit extension.
 
 ## Что внутри
 
 - 6 практичных сценариев: доставка, такси, таймер, спорт, загрузка, поездка.
 - Reusable SwiftUI views для Lock Screen, compact/minimal/expanded Dynamic Island.
+- Domain-neutral presentation model; app-specific scenarios и `ActivityAttributes` остаются в demo.
 - ActivityKit lifecycle: start, update, end.
 - Runtime timeline snapshot, чтобы настоящая Live Activity не становилась stale из-за статичных demo-дат.
 - Реальный Xcode demo project.
-- Тесты для данных, progress, deep links и accessibility.
+- Тесты presentation metadata, timeline snapshots, безопасного progress decoding и accessibility.
 
 ## Как запустить
 

@@ -29,6 +29,7 @@ targets:
     platform: iOS
     sources:
       - path: LiveActivityDemo
+      - path: Shared
     dependencies:
       - target: LiveActivityDemoWidgets
         embed: true
@@ -71,6 +72,7 @@ targets:
     platform: iOS
     sources:
       - path: LiveActivityDemoWidgets
+      - path: Shared
     dependencies:
       - package: LiveActivityDynamicIslandKit
         product: LiveActivityKit

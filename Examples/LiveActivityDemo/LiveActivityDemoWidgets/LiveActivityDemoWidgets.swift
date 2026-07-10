@@ -19,7 +19,7 @@ struct LiveActivityDemoActivityWidget: Widget {
             )
             .activityBackgroundTint(Color(red: 0.965, green: 0.961, blue: 0.945))
             .activitySystemActionForegroundColor(context.state.model.accent.color)
-            .widgetURL(deepLink(for: context.state.model))
+            .widgetURL(deepLink(for: context))
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
@@ -48,7 +48,7 @@ struct LiveActivityDemoActivityWidget: Widget {
             } minimal: {
                 LiveActivityMinimalView(model: context.state.model)
             }
-            .widgetURL(deepLink(for: context.state.model))
+            .widgetURL(deepLink(for: context))
             .keylineTint(context.state.model.accent.color)
         }
     }
@@ -75,10 +75,12 @@ struct LiveActivityDemoActivityWidget: Widget {
             .minimumScaleFactor(0.72)
     }
 
-    private func deepLink(for model: LiveActivityContentModel) -> URL {
-        LiveActivityDeepLink(
-            scenario: model.scenario,
-            stateID: model.id
+    private func deepLink(
+        for context: ActivityViewContext<LiveActivityAttributes>
+    ) -> URL? {
+        LiveActivityDemoDeepLink(
+            scenario: context.attributes.scenario,
+            stateID: context.state.model.id
         ).url
     }
 }
@@ -86,6 +88,34 @@ struct LiveActivityDemoActivityWidget: Widget {
 #Preview("Delivery", as: .content, using: LiveActivityAttributes(scenario: .delivery, activityID: "preview")) {
     LiveActivityDemoActivityWidget()
 } contentStates: {
-    LiveActivityAttributes.ContentState(model: LiveActivityRecipes.delivery.states[1])
-    LiveActivityAttributes.ContentState(model: LiveActivityRecipes.delivery.states[2])
+    LiveActivityAttributes.ContentState(model: .deliveryPreview(progress: 0.54))
+    LiveActivityAttributes.ContentState(model: .deliveryPreview(progress: 0.86))
+}
+
+private extension LiveActivityContentModel {
+    static func deliveryPreview(progress: Double) -> LiveActivityContentModel {
+        LiveActivityContentModel(
+            id: "delivery-preview",
+            symbolName: "shippingbox.fill",
+            accessibilityTitle: "Package delivery",
+            phase: .active,
+            title: "On the way",
+            subtitle: "Courier is moving through the city",
+            primaryValue: "8:22",
+            secondaryValue: "En route",
+            footnote: "Three stops before you",
+            progress: LiveActivityProgress(
+                fraction: progress,
+                label: "\(Int(progress * 100))%"
+            ),
+            timeline: LiveActivityTimeline(
+                startedAt: .now,
+                estimatedEnd: .now.addingTimeInterval(22 * 60),
+                remainingText: "22 min"
+            ),
+            leadingLabel: "Pickup",
+            trailingLabel: "Home",
+            accent: .blue
+        )
+    }
 }

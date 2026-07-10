@@ -2,18 +2,18 @@
 
 ## Change scenarios
 
-Edit `LiveActivityScenario` to define your product domains. Each scenario owns:
+The sample scenarios live in `Examples/LiveActivityDemo/Shared/LiveActivityScenario.swift`. They are demo fixtures, not package API. Each scenario owns:
 
 - title
 - subtitle
 - system image
 - accent color
 
-Then update `LiveActivityRecipes.all`.
+Then update the demo recipes. A production app should map its own domain model directly into `LiveActivityContentModel`.
 
 ## Change content states
 
-Edit `LiveActivityRecipeData.swift`.
+Edit `Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityRecipeData.swift`.
 
 A state should describe one meaningful moment in the activity timeline. Avoid creating states for tiny visual changes only.
 

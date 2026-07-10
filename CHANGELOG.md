@@ -2,8 +2,7 @@
 
 ## 0.1.0
 
-- Initial Live Activity & Dynamic Island Kit.
-- Added six scenario recipes.
-- Added reusable SwiftUI Lock Screen and Dynamic Island views.
-- Added Xcode demo app with WidgetKit extension.
-- Added package tests and preview asset renderer.
+- Added reusable, domain-neutral Lock Screen and Dynamic Island SwiftUI surfaces.
+- Added a complete Xcode demo with six recipes, app-owned ActivityKit attributes, safe deep links, and WidgetKit integration.
+- Added clamped progress decoding, timeline snapshots, accessibility metadata, tests, and a preview asset renderer.
+- Documented the package boundary and migration path from pre-release `main`.
