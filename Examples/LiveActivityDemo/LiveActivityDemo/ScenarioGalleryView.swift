@@ -3,10 +3,15 @@ import SwiftUI
 
 struct ScenarioGalleryView: View {
     @Bindable var controller: LiveActivityDemoController
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    private let columns = [
-        GridItem(.adaptive(minimum: 150), spacing: 12)
-    ]
+    private var columns: [GridItem] {
+        if dynamicTypeSize.isAccessibilitySize {
+            [GridItem(.flexible())]
+        } else {
+            [GridItem(.adaptive(minimum: 150), spacing: 12)]
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {

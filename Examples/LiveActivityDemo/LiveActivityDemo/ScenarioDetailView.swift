@@ -10,12 +10,12 @@ struct ScenarioDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                overview
+                ScenarioOverview(scenario: scenario, model: controller.currentModel)
                 ActivityStatusCard(message: controller.statusMessage)
                     .transaction { $0.animation = nil }
                 surfaceLab
                 stateTimeline
-                lifecycleNote
+                DemoLifecycleNote()
             }
             .padding(.horizontal, 20)
             .padding(.top, 10)
@@ -30,27 +30,6 @@ struct ScenarioDetailView: View {
         .onAppear {
             guard controller.selectedScenario != scenario else { return }
             controller.select(scenario)
-        }
-    }
-
-    private var overview: some View {
-        HStack(alignment: .top, spacing: 14) {
-            Image(systemName: scenario.systemImage)
-                .font(.system(size: 21, weight: .bold))
-                .foregroundStyle(scenario.accent.color)
-                .frame(width: 50, height: 50)
-                .background(scenario.accent.color.opacity(0.13), in: RoundedRectangle(cornerRadius: 17))
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(controller.currentModel.title)
-                    .font(.title2.bold())
-                    .contentTransition(.numericText())
-                Text(controller.currentModel.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            Spacer(minLength: 0)
         }
     }
 
@@ -162,17 +141,6 @@ struct ScenarioDetailView: View {
         }
     }
 
-    private var lifecycleNote: some View {
-        Label {
-            Text("Start creates a real local ActivityKit session. State changes update the system UI; End uses a 30-second dismissal window.")
-        } icon: {
-            Image(systemName: "info.circle")
-        }
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        .padding(.horizontal, 2)
-    }
-
     private var controlDock: some View {
         HStack(spacing: 10) {
             Button {
@@ -205,50 +173,125 @@ struct ScenarioDetailView: View {
         .padding(.vertical, 12)
         .background(.ultraThinMaterial)
         .overlay(alignment: .top) { Divider() }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     @ViewBuilder
     private var startButton: some View {
+#if compiler(>=6.2)
         if #available(iOS 26.0, *) {
             Button {
                 Task { await controller.startActivity() }
             } label: {
-                Label("Start Live Activity", systemImage: "play.fill")
+                Label("Start", systemImage: "play.fill")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.glassProminent)
             .disabled(!controller.canStartActivity)
+            .accessibilityLabel("Start Live Activity")
         } else {
             Button {
                 Task { await controller.startActivity() }
             } label: {
-                Label("Start Live Activity", systemImage: "play.fill")
+                Label("Start", systemImage: "play.fill")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .disabled(!controller.canStartActivity)
+            .accessibilityLabel("Start Live Activity")
         }
+#else
+        fallbackStartButton
+#endif
     }
 
     @ViewBuilder
     private var endButton: some View {
+#if compiler(>=6.2)
         if #available(iOS 26.0, *) {
             Button(role: .destructive) {
                 Task { await controller.endActivity() }
             } label: {
-                Label("End Live Activity", systemImage: "stop.fill")
+                Label("End", systemImage: "stop.fill")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.glassProminent)
+            .accessibilityLabel("End Live Activity")
         } else {
             Button(role: .destructive) {
                 Task { await controller.endActivity() }
             } label: {
-                Label("End Live Activity", systemImage: "stop.fill")
+                Label("End", systemImage: "stop.fill")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
+            .accessibilityLabel("End Live Activity")
         }
+#else
+        fallbackEndButton
+#endif
+    }
+
+    private var fallbackStartButton: some View {
+        Button {
+            Task { await controller.startActivity() }
+        } label: {
+            Label("Start", systemImage: "play.fill")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .disabled(!controller.canStartActivity)
+        .accessibilityLabel("Start Live Activity")
+    }
+
+    private var fallbackEndButton: some View {
+        Button(role: .destructive) {
+            Task { await controller.endActivity() }
+        } label: {
+            Label("End", systemImage: "stop.fill")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .accessibilityLabel("End Live Activity")
+    }
+}
+
+private struct ScenarioOverview: View {
+    var scenario: LiveActivityScenario
+    var model: LiveActivityContentModel
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: scenario.systemImage)
+                .font(.system(size: 21, weight: .bold))
+                .foregroundStyle(scenario.accent.color)
+                .frame(width: 50, height: 50)
+                .background(scenario.accent.color.opacity(0.13), in: RoundedRectangle(cornerRadius: 17))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(model.title)
+                    .font(.title2.bold())
+                    .contentTransition(.numericText())
+                Text(model.subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+private struct DemoLifecycleNote: View {
+    var body: some View {
+        Label {
+            Text("Start creates a real local ActivityKit session. State changes update the system UI; End uses a 30-second dismissal window.")
+        } icon: {
+            Image(systemName: "info.circle")
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .padding(.horizontal, 2)
     }
 }
 

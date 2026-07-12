@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DemoRootView: View {
     @Bindable var controller: LiveActivityDemoController
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         NavigationStack {
@@ -44,12 +45,25 @@ struct DemoRootView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            HStack(spacing: 0) {
-                metric("6", label: "recipes")
-                Divider().frame(height: 34)
-                metric("4", label: "surfaces")
-                Divider().frame(height: 34)
-                metric("0", label: "dependencies")
+            Group {
+                if dynamicTypeSize.isAccessibilitySize {
+                    VStack(spacing: 12) {
+                        metricRow("6", label: "recipes")
+                        Divider()
+                        metricRow("4", label: "surfaces")
+                        Divider()
+                        metricRow("0", label: "dependencies")
+                    }
+                    .padding(.horizontal, 16)
+                } else {
+                    HStack(spacing: 0) {
+                        metric("6", label: "recipes")
+                        Divider().frame(height: 34)
+                        metric("4", label: "surfaces")
+                        Divider().frame(height: 34)
+                        metric("0", label: "dependencies")
+                    }
+                }
             }
             .padding(.vertical, 14)
             .background(.background.opacity(0.72), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -58,6 +72,15 @@ struct DemoRootView: View {
                     .stroke(.separator.opacity(0.28), lineWidth: 1)
             }
         }
+    }
+
+    private func metricRow(_ value: String, label: String) -> some View {
+        HStack {
+            Text(value).font(.headline.weight(.bold)).monospacedDigit()
+            Text(label).font(.body).foregroundStyle(.secondary)
+            Spacer()
+        }
+        .accessibilityElement(children: .combine)
     }
 
     private func metric(_ value: String, label: String) -> some View {
