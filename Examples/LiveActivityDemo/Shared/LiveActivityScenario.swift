@@ -77,17 +77,3 @@ enum LiveActivityScenario: String, CaseIterable, Codable, Hashable, Identifiable
         }
     }
 }
-
-struct LiveActivityDemoDeepLink: Hashable, Sendable {
-    var scenario: LiveActivityScenario
-    var stateID: String
-
-    var url: URL? {
-        var components = URLComponents()
-        components.scheme = "liveactivitydemo"
-        components.host = "scenario"
-        components.path = "/\(scenario.rawValue)"
-        components.queryItems = [URLQueryItem(name: "state", value: stateID)]
-        return components.url
-    }
-}

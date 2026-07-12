@@ -78,7 +78,7 @@ struct LiveActivityDemoActivityWidget: Widget {
     private func deepLink(
         for context: ActivityViewContext<LiveActivityAttributes>
     ) -> URL? {
-        LiveActivityDemoDeepLink(
+        LiveActivityDemoRoute(
             scenario: context.attributes.scenario,
             stateID: context.state.model.id
         ).url

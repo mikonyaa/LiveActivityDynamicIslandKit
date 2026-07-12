@@ -75,6 +75,8 @@ targets:
     scheme:
       configVariants: []
       gatherCoverageData: false
+      testTargets:
+        - LiveActivityDemoTests
 
   LiveActivityDemoWidgets:
     type: app-extension
@@ -107,4 +109,18 @@ targets:
         SKIP_INSTALL: YES
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
         SUPPORTS_MACCATALYST: NO
+        TARGETED_DEVICE_FAMILY: "1,2"
+
+  LiveActivityDemoTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: LiveActivityDemoTests
+    dependencies:
+      - target: LiveActivityDemo
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: dev.liquidglasstemplates.liveactivity.demo.tests
+        SUPPORTED_PLATFORMS: iphonesimulator
         TARGETED_DEVICE_FAMILY: "1,2"

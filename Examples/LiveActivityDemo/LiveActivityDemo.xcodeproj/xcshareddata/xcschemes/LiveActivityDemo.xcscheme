@@ -39,6 +39,17 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F9AA388370481B12AB0DA2AB"
+               BuildableName = "LiveActivityDemoTests.xctest"
+               BlueprintName = "LiveActivityDemoTests"
+               ReferencedContainer = "container:LiveActivityDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>

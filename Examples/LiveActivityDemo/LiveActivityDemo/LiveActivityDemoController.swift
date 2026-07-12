@@ -9,8 +9,10 @@ final class LiveActivityDemoController {
     var selectedScenario: LiveActivityScenario = .delivery
     var selectedStateIndex = 0
     var message: DemoMessage?
+    private(set) var lifecycle: LiveActivityDemoLifecycle = .idle
 
     private var activeActivity: Activity<LiveActivityAttributes>?
+    private var stateObserver: Task<Void, Never>?
 
     var recipes: [LiveActivityRecipe] {
         LiveActivityRecipes.all
@@ -36,11 +38,66 @@ final class LiveActivityDemoController {
         ActivityAuthorizationInfo().areActivitiesEnabled
     }
 
+    var canStartActivity: Bool { lifecycle.canStart && liveActivitiesEnabled }
+    var canUpdateActivity: Bool { lifecycle.canUpdate }
+    var canEndActivity: Bool { lifecycle.canEnd }
+
     var statusMessage: DemoMessage {
-        message ?? DemoMessage(
-            title: "Ready for local preview",
-            detail: "Choose a recipe, press Start, then check the Lock Screen or Dynamic Island.",
-            style: .neutral
+        if let message { return message }
+        switch lifecycle {
+        case .unavailable:
+            return DemoMessage(
+                title: "Live Activities unavailable",
+                detail: "Enable Live Activities in Settings to test the system surfaces.",
+                style: .warning
+            )
+        case .active:
+            return DemoMessage(
+                title: "Live Activity running",
+                detail: "Change the timeline below, then check the Lock Screen or Dynamic Island.",
+                style: .success
+            )
+        case .starting, .updating, .ending:
+            return DemoMessage(
+                title: "Applying lifecycle change",
+                detail: "ActivityKit is updating the system presentation.",
+                style: .neutral
+            )
+        case .failed(let detail):
+            return DemoMessage(title: "ActivityKit error", detail: detail, style: .warning)
+        case .idle, .ended:
+            return DemoMessage(
+                title: "Ready for local preview",
+                detail: "Choose a recipe, press Start, then check the Lock Screen or Dynamic Island.",
+                style: .neutral
+            )
+        }
+    }
+
+    func restoreSession() async {
+        guard liveActivitiesEnabled else {
+            lifecycle = .unavailable
+            activeActivity = nil
+            return
+        }
+
+        guard let activity = Activity<LiveActivityAttributes>.activities.first else {
+            lifecycle = .idle
+            activeActivity = nil
+            return
+        }
+
+        activeActivity = activity
+        apply(
+            scenario: activity.attributes.scenario,
+            stateID: activity.content.state.model.id
+        )
+        lifecycle = lifecycle(for: activity.activityState)
+        observe(activity)
+        message = DemoMessage(
+            title: "Live Activity restored",
+            detail: "This session was recovered from ActivityKit after the app relaunched.",
+            style: .success
         )
     }
 
@@ -71,7 +128,9 @@ final class LiveActivityDemoController {
     }
 
     func startActivity() async {
+        guard lifecycle.canStart, !lifecycle.isBusy else { return }
         guard liveActivitiesEnabled else {
+            lifecycle = .unavailable
             message = DemoMessage(
                 title: "Live Activities are disabled",
                 detail: "Enable Live Activities in Settings to test the real system surface.",
@@ -80,8 +139,20 @@ final class LiveActivityDemoController {
             return
         }
 
-        await endActivity(showMessage: false)
+        if let existing = Activity<LiveActivityAttributes>.activities.first {
+            activeActivity = existing
+            lifecycle = lifecycle(for: existing.activityState)
+            observe(existing)
+            message = DemoMessage(
+                title: "Live Activity already running",
+                detail: "The existing session was restored instead of creating a duplicate.",
+                style: .success
+            )
+            return
+        }
 
+        lifecycle = .starting
+        message = nil
         do {
             let model = currentModel.liveTimelineSnapshot()
             let attributes = LiveActivityAttributes(
@@ -94,12 +165,15 @@ final class LiveActivityDemoController {
                 pushType: nil
             )
             activeActivity = activity
+            lifecycle = .active
+            observe(activity)
             message = DemoMessage(
                 title: "Live Activity running",
                 detail: "Go Home or lock the simulator to see the system Dynamic Island and Lock Screen surfaces.",
                 style: .success
             )
         } catch {
+            lifecycle = .failed(error.localizedDescription)
             message = DemoMessage(
                 title: "Could not start Live Activity",
                 detail: error.localizedDescription,
@@ -109,17 +183,25 @@ final class LiveActivityDemoController {
     }
 
     func updateActivity() async {
-        guard let activeActivity else { return }
+        guard let activeActivity, lifecycle.canUpdate else { return }
+        lifecycle = .updating
         await activeActivity.update(activityContent(for: currentModel.liveTimelineSnapshot()))
+        if self.activeActivity != nil {
+            lifecycle = .active
+        }
     }
 
     func endActivity(showMessage: Bool = true) async {
-        guard let activeActivity else { return }
+        guard let activeActivity, lifecycle.canEnd, !lifecycle.isBusy else { return }
+        lifecycle = .ending
         await activeActivity.end(
             activityContent(for: currentModel.liveTimelineSnapshot(), staleDate: nil),
             dismissalPolicy: .after(Date().addingTimeInterval(30))
         )
         self.activeActivity = nil
+        stateObserver?.cancel()
+        stateObserver = nil
+        lifecycle = .ended
 
         if showMessage {
             message = DemoMessage(
@@ -131,21 +213,15 @@ final class LiveActivityDemoController {
     }
 
     func handle(url: URL) {
-        guard url.scheme == "liveactivitydemo" else { return }
-        guard url.host == "scenario" else { return }
-        let scenarioName = url.pathComponents.dropFirst().first
-        guard let scenarioName,
-              let scenario = LiveActivityScenario(rawValue: scenarioName)
-        else { return }
+        guard let route = LiveActivityDemoRoute(url: url) else { return }
+        apply(scenario: route.scenario, stateID: route.stateID)
+        Task { await updateActivity() }
+    }
 
-        select(scenario)
-
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let stateID = components.queryItems?.first(where: { $0.name == "state" })?.value,
-              let index = selectedRecipe.states.firstIndex(where: { $0.id == stateID })
-        else { return }
-
+    func selectState(at index: Int) {
+        guard selectedRecipe.states.indices.contains(index) else { return }
         selectedStateIndex = index
+        Task { await updateActivity() }
     }
 
     private func activityContent(
@@ -156,6 +232,51 @@ final class LiveActivityDemoController {
             state: LiveActivityAttributes.ContentState(model: model),
             staleDate: staleDate ?? model.timeline.estimatedEnd
         )
+    }
+
+    private func apply(scenario: LiveActivityScenario, stateID: String) {
+        let recipe = LiveActivityRecipes.recipe(for: scenario)
+        guard let index = recipe.states.firstIndex(where: { $0.id == stateID }) else { return }
+        withTransaction(Transaction(animation: nil)) {
+            selectedScenario = scenario
+            selectedStateIndex = index
+        }
+    }
+
+    private func observe(_ activity: Activity<LiveActivityAttributes>) {
+        stateObserver?.cancel()
+        stateObserver = Task { [weak self] in
+            for await state in activity.activityStateUpdates {
+                guard !Task.isCancelled else { return }
+                self?.receive(state)
+            }
+        }
+    }
+
+    private func receive(_ state: ActivityState) {
+        lifecycle = lifecycle(for: state)
+        switch state {
+        case .ended, .dismissed:
+            activeActivity = nil
+            stateObserver = nil
+        case .active, .pending, .stale:
+            break
+        @unknown default:
+            break
+        }
+    }
+
+    private func lifecycle(for state: ActivityState) -> LiveActivityDemoLifecycle {
+        switch state {
+        case .active, .stale:
+            .active
+        case .pending:
+            .starting
+        case .ended, .dismissed:
+            .ended
+        @unknown default:
+            .idle
+        }
     }
 }
 
