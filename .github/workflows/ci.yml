@@ -47,6 +47,13 @@ jobs:
             -destination "$DEMO_DESTINATION" \
             CODE_SIGNING_ALLOWED=NO \
             build
+      - name: Test demo policies
+        run: |
+          xcodebuild test \
+            -project "$DEMO_PROJECT" \
+            -scheme "$DEMO_SCHEME" \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
+            CODE_SIGNING_ALLOWED=NO
 
   full:
     name: Full · ${{ matrix.name }}
@@ -81,6 +88,14 @@ jobs:
             -destination "$DEMO_DESTINATION" \
             CODE_SIGNING_ALLOWED=NO \
             build
+      - name: Test demo policies
+        if: matrix.name == 'current'
+        run: |
+          xcodebuild test \
+            -project "$DEMO_PROJECT" \
+            -scheme "$DEMO_SCHEME" \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
+            CODE_SIGNING_ALLOWED=NO
       - name: Install pinned XcodeGen
         if: matrix.name == 'current'
         run: |

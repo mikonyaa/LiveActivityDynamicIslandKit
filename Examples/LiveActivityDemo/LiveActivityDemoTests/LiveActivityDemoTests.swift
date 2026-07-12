@@ -28,4 +28,10 @@ struct LiveActivityDemoTests {
         #expect(LiveActivityDemoLifecycle.updating.isBusy)
         #expect(!LiveActivityDemoLifecycle.ended.canEnd)
     }
+
+    @Test("Recipe state lookup rejects unknown deep-link states")
+    func recipeStateLookup() {
+        #expect(LiveActivityRecipes.stateIndex(for: .delivery, stateID: "delivery-1") == 0)
+        #expect(LiveActivityRecipes.stateIndex(for: .delivery, stateID: "unknown") == nil)
+    }
 }

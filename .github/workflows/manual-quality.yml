@@ -45,6 +45,13 @@ jobs:
             xcodegen generate
           )
           git diff --exit-code -- "$DEMO_PROJECT/project.pbxproj"
+      - name: Test demo policies
+        run: |
+          xcodebuild test \
+            -project "$DEMO_PROJECT" \
+            -scheme "$DEMO_SCHEME" \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
+            CODE_SIGNING_ALLOWED=NO
       - name: Clean archive
         run: |
           xcodebuild \

@@ -48,6 +48,13 @@ enum LiveActivityRecipes {
         return recipe.states[safeIndex]
     }
 
+    static func stateIndex(
+        for scenario: LiveActivityScenario,
+        stateID: String
+    ) -> Int? {
+        recipe(for: scenario).states.firstIndex { $0.id == stateID }
+    }
+
     static let baseDate = Date(timeIntervalSinceReferenceDate: 795_000_000)
 
     static func timeline(

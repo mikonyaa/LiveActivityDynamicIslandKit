@@ -25,7 +25,7 @@ Part of the [Apple Design Templates](https://github.com/mikonyaa/Apple-Design-Te
 
 ## Run the Activity Lab
 
-Requirements: Xcode 26+, Swift 6, and an iOS 17+ simulator.
+Requirements: Xcode 16.4+, Swift 6, and an iOS 17+ simulator. Xcode 26 enables the native Liquid Glass controls shown in the demo; earlier supported Xcode versions build the fallback controls.
 
 ```bash
 open Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj

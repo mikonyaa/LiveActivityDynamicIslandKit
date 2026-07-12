@@ -13,7 +13,7 @@
 
 ## Запуск
 
-Нужны Xcode 26+, Swift 6 и iOS 17+ simulator.
+Нужны Xcode 16.4+, Swift 6 и iOS 17+ simulator. Xcode 26 включает native Liquid Glass controls; на более ранних поддерживаемых версиях используются fallback controls.
 
 ```bash
 open Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj

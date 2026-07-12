@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 enum LiveActivityDemoLifecycle: Equatable, Sendable {
     case unavailable
@@ -40,4 +41,39 @@ enum LiveActivityDemoLifecycle: Equatable, Sendable {
             false
         }
     }
+}
+
+struct DemoMessage: Identifiable, Equatable {
+    enum Style {
+        case neutral
+        case success
+        case warning
+
+        var symbolName: String {
+            switch self {
+            case .neutral:
+                "sparkles"
+            case .success:
+                "checkmark.circle.fill"
+            case .warning:
+                "exclamationmark.triangle.fill"
+            }
+        }
+
+        var tint: Color {
+            switch self {
+            case .neutral:
+                .blue
+            case .success:
+                .green
+            case .warning:
+                .orange
+            }
+        }
+    }
+
+    let id = UUID()
+    var title: String
+    var detail: String
+    var style: Style
 }
