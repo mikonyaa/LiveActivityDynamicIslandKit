@@ -236,6 +236,8 @@ final class LiveActivityDemoController {
         }
     }
 
+    // ActivityState gained `pending` in the iOS 26 SDK, so the case is compiled
+    // only when the matching Swift toolchain is available.
     private func receive(_ state: ActivityState) {
         let reportedLifecycle = lifecycle(for: state)
         if !(lifecycle.isBusy && reportedLifecycle == .active) {
@@ -245,8 +247,14 @@ final class LiveActivityDemoController {
         case .ended, .dismissed:
             activeActivity = nil
             stateObserver = nil
-        case .active, .pending, .stale:
+        case .active:
             break
+        case .stale:
+            break
+#if compiler(>=6.2)
+        case .pending:
+            break
+#endif
         @unknown default:
             break
         }
@@ -254,10 +262,14 @@ final class LiveActivityDemoController {
 
     private func lifecycle(for state: ActivityState) -> LiveActivityDemoLifecycle {
         switch state {
-        case .active, .stale:
+        case .active:
             .active
+        case .stale:
+            .active
+#if compiler(>=6.2)
         case .pending:
             .starting
+#endif
         case .ended, .dismissed:
             .ended
         @unknown default:
