@@ -60,7 +60,7 @@
 		B706C64B2614FF644649039E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B7EB53EDB53A6046245B404D /* LiveActivityDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoApp.swift; sourceTree = "<group>"; };
 		D489A2912D7FDB8A6945690E /* LiveActivityScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityScenario.swift; sourceTree = "<group>"; };
-		DDB704BB17DCE83F71C5D39A /* live-activity-hardening */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "live-activity-hardening"; path = ../..; sourceTree = SOURCE_ROOT; };
+		DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LiveActivityDynamicIslandKit; path = ../..; sourceTree = SOURCE_ROOT; };
 		EF4E79DAE30FF6D343B2B8BF /* LiveActivityRecipeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityRecipeData.swift; sourceTree = "<group>"; };
 		FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LiveActivityDemoWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFA637C66D036DE0FA517C35 /* LiveActivityDemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LiveActivityDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,7 +116,7 @@
 		8F735F39DB326CFAF2D47CCB /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				DDB704BB17DCE83F71C5D39A /* live-activity-hardening */,
+				DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
