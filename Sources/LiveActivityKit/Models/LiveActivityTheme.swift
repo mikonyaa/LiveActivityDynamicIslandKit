@@ -34,6 +34,45 @@ public struct LiveActivityPalette: Hashable, Sendable {
             accent: accent.color
         )
     }
+
+    /// The built-in dark palette used by ``LiveActivityAppearance/porcelain(accent:)``.
+    public static func porcelainDark(accent: LiveActivityAccent) -> LiveActivityPalette {
+        LiveActivityPalette(
+            background: Color(red: 0.09, green: 0.09, blue: 0.10),
+            elevatedBackground: Color(red: 0.14, green: 0.14, blue: 0.15),
+            primaryText: .white,
+            secondaryText: Color.white.opacity(0.68),
+            separator: Color.white.opacity(0.16),
+            accent: accent.color
+        )
+    }
+}
+
+/// A pair of app-defined palettes for adaptive Lock Screen and preview surfaces.
+///
+/// Use this value when the built-in porcelain theme does not match your brand.
+/// Dynamic Island views continue to respect the system's dark presentation.
+public struct LiveActivityAppearance: Hashable, Sendable {
+    public var light: LiveActivityPalette
+    public var dark: LiveActivityPalette
+
+    public init(light: LiveActivityPalette, dark: LiveActivityPalette) {
+        self.light = light
+        self.dark = dark
+    }
+
+    /// Returns the palette appropriate for the current SwiftUI color scheme.
+    public func palette(for colorScheme: ColorScheme) -> LiveActivityPalette {
+        colorScheme == .dark ? dark : light
+    }
+
+    /// The package's adaptive porcelain appearance with an app-selected accent.
+    public static func porcelain(accent: LiveActivityAccent) -> LiveActivityAppearance {
+        LiveActivityAppearance(
+            light: .porcelain(accent: accent),
+            dark: .porcelainDark(accent: accent)
+        )
+    }
 }
 
 public enum LiveActivityTheme: String, CaseIterable, Identifiable, Sendable {
@@ -45,7 +84,7 @@ public enum LiveActivityTheme: String, CaseIterable, Identifiable, Sendable {
         "Porcelain"
     }
 
-    public func palette(for accent: LiveActivityAccent, colorScheme _: ColorScheme) -> LiveActivityPalette {
-        .porcelain(accent: accent)
+    public func palette(for accent: LiveActivityAccent, colorScheme: ColorScheme) -> LiveActivityPalette {
+        LiveActivityAppearance.porcelain(accent: accent).palette(for: colorScheme)
     }
 }

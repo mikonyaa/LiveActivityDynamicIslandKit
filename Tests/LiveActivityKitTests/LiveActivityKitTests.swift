@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Testing
 @testable import LiveActivityKit
 
@@ -18,6 +19,9 @@ struct LiveActivityKitTests {
     func progressClampsInitializerInput() {
         #expect(LiveActivityProgress(fraction: -1, label: "low").fraction == 0)
         #expect(LiveActivityProgress(fraction: 2, label: "high").fraction == 1)
+        #expect(LiveActivityProgress(fraction: .nan, label: "invalid").fraction == 0)
+        #expect(LiveActivityProgress(fraction: -.infinity, label: "invalid").fraction == 0)
+        #expect(LiveActivityProgress(fraction: .infinity, label: "complete").fraction == 1)
     }
 
     @Test("Progress clamps decoded input")
@@ -37,6 +41,38 @@ struct LiveActivityKitTests {
 
         #expect(snapshot.timeline.startedAt == now)
         #expect(snapshot.timeline.estimatedEnd > now)
+    }
+
+    @Test("Timeline never ends before it starts")
+    func timelineNormalizesInvalidDates() throws {
+        let start = Date(timeIntervalSinceReferenceDate: 900_000_000)
+        let timeline = LiveActivityTimeline(
+            startedAt: start,
+            estimatedEnd: start.addingTimeInterval(-60),
+            remainingText: "Now"
+        )
+        #expect(timeline.estimatedEnd == start)
+
+        let data = try JSONEncoder().encode(timeline)
+        let decoded = try JSONDecoder().decode(LiveActivityTimeline.self, from: data)
+        #expect(decoded.estimatedEnd >= decoded.startedAt)
+    }
+
+    @Test("Appearance resolves independent light and dark palettes")
+    func appearanceResolvesColorScheme() {
+        let light = LiveActivityPalette.porcelain(accent: .blue)
+        let dark = LiveActivityPalette(
+            background: .black,
+            elevatedBackground: .gray,
+            primaryText: .white,
+            secondaryText: .secondary,
+            separator: .gray,
+            accent: .green
+        )
+        let appearance = LiveActivityAppearance(light: light, dark: dark)
+
+        #expect(appearance.palette(for: .light) == light)
+        #expect(appearance.palette(for: .dark) == dark)
     }
 
     private func makeModel() -> LiveActivityContentModel {

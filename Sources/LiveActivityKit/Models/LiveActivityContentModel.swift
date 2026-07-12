@@ -91,9 +91,15 @@ public struct LiveActivityProgress: Codable, Hashable, Sendable {
         label: String,
         isIndeterminate: Bool = false
     ) {
-        self.fraction = min(max(fraction, 0), 1)
+        self.fraction = Self.normalized(fraction)
         self.label = label
         self.isIndeterminate = isIndeterminate
+    }
+
+    private static func normalized(_ fraction: Double) -> Double {
+        if fraction.isNaN || fraction == -.infinity { return 0 }
+        if fraction == .infinity { return 1 }
+        return min(max(fraction, 0), 1)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -130,7 +136,29 @@ public struct LiveActivityTimeline: Codable, Hashable, Sendable {
         remainingText: String
     ) {
         self.startedAt = startedAt
-        self.estimatedEnd = estimatedEnd
+        self.estimatedEnd = max(startedAt, estimatedEnd)
         self.remainingText = remainingText
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case startedAt
+        case estimatedEnd
+        case remainingText
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            startedAt: try container.decode(Date.self, forKey: .startedAt),
+            estimatedEnd: try container.decode(Date.self, forKey: .estimatedEnd),
+            remainingText: try container.decode(String.self, forKey: .remainingText)
+        )
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(startedAt, forKey: .startedAt)
+        try container.encode(estimatedEnd, forKey: .estimatedEnd)
+        try container.encode(remainingText, forKey: .remainingText)
     }
 }

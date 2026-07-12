@@ -3,19 +3,28 @@ import SwiftUI
 public struct LiveActivityPreviewPanel: View {
     public var model: LiveActivityContentModel
     public var theme: LiveActivityTheme
+    public var appearance: LiveActivityAppearance?
 
     public init(
         model: LiveActivityContentModel,
-        theme: LiveActivityTheme
+        theme: LiveActivityTheme = .porcelain
     ) {
         self.model = model
         self.theme = theme
+        self.appearance = nil
+    }
+
+    /// Creates a complete surface preview using app-defined light and dark palettes.
+    public init(model: LiveActivityContentModel, appearance: LiveActivityAppearance) {
+        self.model = model
+        self.theme = .porcelain
+        self.appearance = appearance
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             sectionTitle("Lock Screen")
-            LiveActivityLockScreenCard(model: model, theme: theme)
+            lockScreenPreview
 
             sectionTitle("Dynamic Island")
             HStack(spacing: 14) {
@@ -39,18 +48,36 @@ public struct LiveActivityPreviewPanel: View {
         }
     }
 
+    @ViewBuilder
+    private var lockScreenPreview: some View {
+        if let appearance {
+            LiveActivityLockScreenCard(model: model, appearance: appearance)
+        } else {
+            LiveActivityLockScreenCard(model: model, theme: theme)
+        }
+    }
+
     private var expandedPreview: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Expanded")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
-            LiveActivityExpandedIslandView(model: model, theme: theme)
+            expandedSurface
                 .padding(14)
                 .background(
                     RoundedRectangle(cornerRadius: 28, style: .continuous)
                         .fill(Color.black)
                 )
                 .foregroundStyle(.white)
+        }
+    }
+
+    @ViewBuilder
+    private var expandedSurface: some View {
+        if let appearance {
+            LiveActivityExpandedIslandView(model: model, appearance: appearance)
+        } else {
+            LiveActivityExpandedIslandView(model: model, theme: theme)
         }
     }
 

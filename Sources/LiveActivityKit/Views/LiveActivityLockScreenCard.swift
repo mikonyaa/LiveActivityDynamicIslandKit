@@ -3,6 +3,7 @@ import SwiftUI
 public struct LiveActivityLockScreenCard: View {
     public var model: LiveActivityContentModel
     public var theme: LiveActivityTheme
+    public var appearance: LiveActivityAppearance?
 
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -13,10 +14,19 @@ public struct LiveActivityLockScreenCard: View {
     ) {
         self.model = model
         self.theme = theme
+        self.appearance = nil
+    }
+
+    /// Creates a Lock Screen surface using app-defined light and dark palettes.
+    public init(model: LiveActivityContentModel, appearance: LiveActivityAppearance) {
+        self.model = model
+        self.theme = .porcelain
+        self.appearance = appearance
     }
 
     public var body: some View {
-        let palette = theme.palette(for: model.accent, colorScheme: colorScheme)
+        let palette = appearance?.palette(for: colorScheme)
+            ?? theme.palette(for: model.accent, colorScheme: colorScheme)
 
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {

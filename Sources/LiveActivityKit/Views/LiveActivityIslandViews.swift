@@ -62,6 +62,7 @@ public struct LiveActivityMinimalView: View {
 public struct LiveActivityExpandedIslandView: View {
     public var model: LiveActivityContentModel
     public var theme: LiveActivityTheme
+    public var appearance: LiveActivityAppearance?
 
     @Environment(\.colorScheme) private var colorScheme
 
@@ -71,10 +72,19 @@ public struct LiveActivityExpandedIslandView: View {
     ) {
         self.model = model
         self.theme = theme
+        self.appearance = nil
+    }
+
+    /// Creates an expanded Dynamic Island surface using an app-defined appearance.
+    public init(model: LiveActivityContentModel, appearance: LiveActivityAppearance) {
+        self.model = model
+        self.theme = .porcelain
+        self.appearance = appearance
     }
 
     public var body: some View {
-        let palette = theme.palette(for: model.accent, colorScheme: colorScheme)
+        let palette = appearance?.palette(for: colorScheme)
+            ?? theme.palette(for: model.accent, colorScheme: colorScheme)
 
         VStack(alignment: .leading, spacing: 7) {
             HStack(spacing: 10) {
