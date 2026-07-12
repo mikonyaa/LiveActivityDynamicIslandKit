@@ -33,10 +33,10 @@ The UI layer contains separate views for each system surface:
 - `LiveActivityExpandedIslandView`
 - `LiveActivityPreviewPanel`
 
-Each view accepts a model and the shared Porcelain visual style. No view owns business state.
+Each view accepts a model and either the adaptive Porcelain theme or an app-defined `LiveActivityAppearance`. No view owns business state.
 
 ## Demo app
 
-The demo app is a local control surface. It lets you pick a scenario, start the Live Activity, move between states, and end the activity.
+The demo app is a local control surface. It lets you pick a scenario, start the Live Activity, move between states, restore an active session after relaunch, and end the activity. Its explicit lifecycle states prevent overlapping mutations and duplicate starts.
 
 The WidgetKit extension contains the real `ActivityConfiguration` used by the system.

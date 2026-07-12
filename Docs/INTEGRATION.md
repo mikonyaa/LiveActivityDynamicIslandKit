@@ -49,8 +49,8 @@ The demo controller shows the local lifecycle:
 
 Before sending content to ActivityKit, convert static/demo timeline data into a live snapshot. `LiveActivityContentModel.liveTimelineSnapshot()` resets `startedAt` to the current time and keeps `staleDate` in the future. If `staleDate` is already in the past, iOS can create the activity and immediately mark it stale, which makes the Dynamic Island and Lock Screen surfaces look like they did not start.
 
-For production, move lifecycle work into a small service or actor that owns the active activity handle. The package does not prescribe that service because its lifetime and update source are app-specific.
+For production, move lifecycle work into a small service or actor that owns the active activity handle. Restore existing sessions from `Activity<YourAttributes>.activities`, serialize mutations, and prevent duplicate starts. The package does not prescribe that service because its lifetime and update source are app-specific.
 
-## 6. Test on device
+## 6. Verify system behavior
 
-The simulator is good for layout checks. Always validate final Live Activity behavior on a real device because Lock Screen, notification settings, and Dynamic Island behavior depend on system state.
+The simulator supports repeatable layout, lifecycle, Lock Screen, Dynamic Island, deep-link, color-scheme, and accessibility checks. Before shipping a production app to customers, also validate on every supported hardware class because notification settings and system state differ from a simulator.

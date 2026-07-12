@@ -1,23 +1,32 @@
-# 0.1.0 release gate
+# 0.1.0 release record
 
-The release may be published only after every automated check and the physical-device gate are complete.
+Release candidate verified on July 12, 2026. This record contains simulator evidence only and makes no physical-device claim.
 
-## Automated
+## Automated gates
 
-- `swift test`
-- XcodeGen `2.45.4` clean reproduction
-- generic iOS Simulator demo build
-- documentation and publication-artifact scan
+- `swift test`: package tests passed.
+- `xcodebuild test`: demo route and lifecycle-policy tests passed on iPhone 17 Pro / iOS 26.5 simulator.
+- SwiftLint strict mode: passed.
+- XcodeGen `2.45.4`: checked-in project reproduced without diff.
+- Generic iOS Simulator build: passed.
+- Repository hygiene, documentation links, and publication scan: passed.
 
-## Physical device
+## Runtime matrix
 
-Record the device model, iOS version, date, and result for:
+### iPhone 17 Pro / iOS 26.5 simulator
 
-- start from the demo app
-- update through multiple states
-- Lock Screen rendering
-- Dynamic Island compact, minimal, and expanded rendering on supported hardware
-- deep-link return to the selected scenario/state
-- end and dismissal behavior
+- Start, state update, and 30-second end/dismissal flow passed.
+- Compact and expanded Dynamic Island rendering passed.
+- Lock Screen rendering passed.
+- Deep-link return selected the exact recipe state.
+- Active session recovery after terminating and relaunching the app passed.
+- Light, dark, and accessibility Dynamic Type layout review passed.
 
-Current status: **blocked pending recorded physical-device evidence**.
+### iPhone 12 / iOS 26.2 simulator
+
+- Start, state update, Lock Screen rendering, and end passed.
+- The no-Dynamic-Island hardware class behaved correctly without an island surface.
+
+## Publication decision
+
+The open-source template release is approved from simulator evidence. Integrating applications should still complete hardware-specific QA before their own customer release.

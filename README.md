@@ -1,57 +1,39 @@
 # Live Activity & Dynamic Island Kit
 
-![Live Activity and Dynamic Island Kit demo screenshot](Assets/Screenshots/demo-recipes.png)
+<p align="center">
+  <img src="Assets/Screenshots/demo-recipes.png" width="44%" alt="Activity Lab recipe library">
+  <img src="Assets/Screenshots/activity-lab.png" width="44%" alt="Interactive Live Activity surface lab">
+</p>
 
 [![Swift](https://img.shields.io/badge/Swift-6.0-F05138?logo=swift&logoColor=white)](#)
 [![iOS](https://img.shields.io/badge/iOS-17%2B-111111?logo=apple&logoColor=white)](#)
-[![CI](https://img.shields.io/badge/CI-ready-34C759)](#)
+[![CI](https://github.com/mikonyaa/LiveActivityDynamicIslandKit/actions/workflows/ci.yml/badge.svg)](https://github.com/mikonyaa/LiveActivityDynamicIslandKit/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-007AFF)](LICENSE)
 
-A focused SwiftUI rendering kit for Live Activities and Dynamic Island, paired with a complete ActivityKit demo that shows where product-specific models, lifecycle code, and deep links belong.
+A focused SwiftUI rendering kit for Live Activities and Dynamic Island, paired with a complete local ActivityKit lab. The package owns presentation; your app keeps its attributes, lifecycle, routing, and product state.
 
-Part of the Apple Design Templates collection.
+Part of the [Apple Design Templates](https://github.com/mikonyaa/Apple-Design-Templates) collection.
 
-## Scenarios
+## Why this template
 
-The template includes six practical scenarios:
+- Four reusable system surfaces: Lock Screen, compact, minimal, and expanded Dynamic Island.
+- One domain-neutral model carrying content, progress, symbol, accent, timeline, and accessibility text.
+- Adaptive built-in Porcelain appearance plus public light/dark palettes for product branding.
+- A real app and WidgetKit extension with start, update, recovery after relaunch, exact deep links, and end.
+- Six deterministic recipes — delivery, ride, timer, sports, transfer, and trip — with no backend setup.
+- Swift 6, zero runtime dependencies, package tests, demo tests, strict SwiftLint, and reproducible XcodeGen output.
 
-| Scenario | Good for |
-| --- | --- |
-| Delivery | courier, food, package, marketplace tracking |
-| Ride | taxi, pickup, driver arrival, shared transport |
-| Timer | focus, workout, meditation, cooking, study sessions |
-| Sports | live score, match clock, period-based status |
-| Download | file transfer, media sync, offline maps, imports |
-| Trip | boarding, gate, route progress, travel timeline |
+## Run the Activity Lab
 
-## What is inside
-
-- Reusable SwiftUI components for Lock Screen cards, compact Dynamic Island, minimal Dynamic Island, and expanded Dynamic Island.
-- A domain-neutral presentation model that carries its own symbol, accent, and accessibility text.
-- App-specific ActivityKit attributes and lifecycle code contained in the demo instead of the package API.
-- Runtime timeline snapshots keep real Live Activities fresh even when the static demo data is reused later.
-- Deterministic recipe data for six scenarios, so designers and developers can iterate without backend setup.
-- A complete Xcode demo app with a WidgetKit extension.
-- Package tests for presentation metadata, timeline snapshots, accessibility summaries, and safe progress decoding.
-- A real simulator screenshot for the public preview and reproducible component preview assets produced with `Tools/render_preview_assets.py`.
-
-## Run the demo
-
-Requirements:
-
-- Xcode 26 or newer
-- iOS 17 or newer simulator/device
-- Swift 6
-
-Open:
+Requirements: Xcode 26+, Swift 6, and an iOS 17+ simulator.
 
 ```bash
 open Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj
 ```
 
-Choose the `LiveActivityDemo` scheme and run on an iPhone simulator or device. In the app, choose a scenario, start the Live Activity, and move through the timeline states.
+Run the `LiveActivityDemo` scheme, open a recipe, and press **Start**. Move through the lifecycle timeline to update the real system presentation. The demo restores an active session after app relaunch and prevents duplicate activities.
 
-Optional: regenerate the Xcode project with XcodeGen:
+The checked-in project is ready to open. To reproduce it with the pinned XcodeGen version:
 
 ```bash
 cd Examples/LiveActivityDemo
@@ -59,28 +41,15 @@ xcodegen generate
 open LiveActivityDemo.xcodeproj
 ```
 
-XcodeGen is not required. The checked-in `.xcodeproj` remains ready to open directly.
-
-Run package tests:
-
-```bash
-swift test
-```
-
-Compile the demo app from Terminal:
-
-```bash
-xcodebuild \
-  -project Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj \
-  -scheme LiveActivityDemo \
-  -destination 'generic/platform=iOS Simulator' \
-  CODE_SIGNING_ALLOWED=NO \
-  build
-```
-
 ## Add the package
 
-After the `0.1.0` release is published, add the package dependency in Xcode or in `Package.swift`:
+In Xcode, add:
+
+```text
+https://github.com/mikonyaa/LiveActivityDynamicIslandKit.git
+```
+
+Or declare the release in `Package.swift`:
 
 ```swift
 dependencies: [
@@ -91,57 +60,85 @@ dependencies: [
 ]
 ```
 
-Then add the product to both your app and widget targets:
+Link `LiveActivityKit` to both your app and widget-extension targets:
 
 ```swift
 .product(name: "LiveActivityKit", package: "LiveActivityDynamicIslandKit")
 ```
 
-Until the first release is published, clone the repository and use the local package path. This avoids presenting an unreleased tag as installable.
+## Integration boundary
 
-## Integrate into your app
+The package intentionally does not define `ActivityAttributes` or a generic lifecycle service. Those types carry product identity and belong to your app.
 
-1. Add the `LiveActivityKit` product to your app and widget extension.
-2. Define your own `ActivityAttributes` in a source file shared by those two targets.
-3. Add `NSSupportsLiveActivities` to the app target.
-4. Map your domain state into `LiveActivityContentModel`.
-5. Keep Live Activity updates short, glanceable, and state-driven.
+1. Define app-owned `ActivityAttributes` in a file shared by the app and widget targets.
+2. Add `NSSupportsLiveActivities` to the app target.
+3. Map product state into `LiveActivityContentModel`.
+4. Compose the package views inside `ActivityConfiguration`.
+5. Start, update, restore, and end activities from your own lifecycle owner.
 
-Detailed integration notes are in [Docs/INTEGRATION.md](Docs/INTEGRATION.md).
+See [Integration](Docs/INTEGRATION.md), [Architecture](Docs/ARCHITECTURE.md), and [Customization](Docs/CUSTOMIZATION.md) for production-shaped examples.
 
-## Structure
+## Custom appearance
 
-```text
-Sources/LiveActivityKit/
-  Models/      domain-neutral content and porcelain palette
-  Views/       Lock Screen and Dynamic Island SwiftUI surfaces
+Use the built-in adaptive theme:
 
-Examples/LiveActivityDemo/
-  LiveActivityDemo/         demo app and local controller
-  LiveActivityDemoWidgets/  real WidgetKit ActivityConfiguration
-  Shared/                   demo-only scenario and ActivityAttributes
-
-Docs/
-  ARCHITECTURE.md
-  CUSTOMIZATION.md
-  INTEGRATION.md
-  MIGRATION-0.1.md
+```swift
+LiveActivityLockScreenCard(model: model, theme: .porcelain)
 ```
 
-## Design principles
+Or pass independent light and dark palettes without forking the package:
 
-- One state model drives every surface.
-- The Lock Screen card carries context; the island surfaces stay glanceable.
-- Motion and progress are calm, not decorative.
-- The visual system uses one porcelain palette by default, so the demo stays stable and easy to adapt.
-- The demo data is realistic enough for product work but small enough for beginners to understand.
+```swift
+let appearance = LiveActivityAppearance(
+    light: lightPalette,
+    dark: darkPalette
+)
 
-Official Apple references:
+LiveActivityLockScreenCard(model: model, appearance: appearance)
+```
 
-- [ActivityKit](https://developer.apple.com/documentation/activitykit)
-- [Displaying live data with Live Activities](https://developer.apple.com/documentation/activitykit/displaying-live-data-with-live-activities)
-- [DynamicIsland](https://developer.apple.com/documentation/widgetkit/dynamicisland)
-- [Launching your app from a Live Activity](https://developer.apple.com/documentation/activitykit/launching-your-app-from-a-live-activity)
+Existing theme-based initializers remain source compatible.
+
+## Verify locally
+
+```bash
+swift test
+swiftlint lint --strict
+xcodebuild \
+  -project Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj \
+  -scheme LiveActivityDemo \
+  -destination 'generic/platform=iOS Simulator' \
+  CODE_SIGNING_ALLOWED=NO \
+  build
+```
+
+The release matrix and recorded simulator evidence are in [Docs/RELEASE-0.1.0.md](Docs/RELEASE-0.1.0.md).
+
+## Repository map
+
+```text
+Sources/LiveActivityKit/     reusable models, appearance, and SwiftUI surfaces
+Tests/LiveActivityKitTests/  public package behavior
+
+Examples/LiveActivityDemo/
+  LiveActivityDemo/          Activity Lab and recoverable local lifecycle
+  LiveActivityDemoWidgets/   real ActivityConfiguration and Dynamic Island
+  LiveActivityDemoTests/     routing and lifecycle policy tests
+  Shared/                    app-owned attributes, scenarios, and routes
+
+Docs/                        integration, customization, migration, and release notes
+```
+
+## Design rules
+
+- Keep the information glanceable and the most important value immediately readable.
+- Drive every surface from one content state.
+- Use progress only when its meaning is clear.
+- Deep-link to the exact represented state.
+- End the Live Activity when the tracked event ends.
+- Keep app identity and side effects outside the rendering package.
+
+Official references: [ActivityKit](https://developer.apple.com/documentation/activitykit), [Live Activities](https://developer.apple.com/design/human-interface-guidelines/live-activities), and [DynamicIsland](https://developer.apple.com/documentation/widgetkit/dynamicisland).
 
 ## License
 

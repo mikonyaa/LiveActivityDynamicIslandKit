@@ -19,11 +19,9 @@ A state should describe one meaningful moment in the activity timeline. Avoid cr
 
 ## Change visual style
 
-Edit `LiveActivityTheme`.
+The template ships with an adaptive Porcelain appearance. For product branding, create a `LiveActivityAppearance` with independent light and dark `LiveActivityPalette` values and pass it to the Lock Screen, expanded-island, or preview initializers.
 
-The template ships with one Porcelain visual style: light, calm, product-friendly, and stable across the demo app, Lock Screen card, and Dynamic Island surfaces.
-
-If your product needs a different look, change the palette values in `LiveActivityPalette.porcelain(accent:)` or add a new theme deliberately after the base flow is working.
+The original `theme: .porcelain` initializers remain available. Prefer an appearance value over editing package source so upgrades stay straightforward.
 
 Keep contrast high. Live Activities are glanced at quickly and often appear in bright or dark environments.
 
