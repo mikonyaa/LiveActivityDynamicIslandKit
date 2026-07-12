@@ -1,6 +1,6 @@
 # 0.1.0 release record
 
-Release candidate verified on July 12, 2026. This record contains simulator evidence only and makes no physical-device claim.
+Release candidate verified on July 13, 2026. This record contains simulator evidence only and makes no physical-device claim.
 
 ## Automated gates
 
