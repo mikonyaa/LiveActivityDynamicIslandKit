@@ -5,12 +5,15 @@ struct DemoRootView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $controller.navigationPath) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 26) {
                     hero
                     ActivityStatusCard(message: controller.statusMessage)
                         .transaction { $0.animation = nil }
+                    if let feedback = controller.routeFeedback {
+                        ActivityStatusCard(message: feedback, identifier: "route-feedback")
+                    }
                     ScenarioGalleryView(controller: controller)
                 }
                 .padding(.horizontal, 20)
@@ -110,6 +113,7 @@ struct DemoBackground: View {
 
 struct ActivityStatusCard: View {
     var message: DemoMessage
+    var identifier = "activity-status"
 
     var body: some View {
         HStack(alignment: .center, spacing: 13) {
@@ -135,5 +139,6 @@ struct ActivityStatusCard: View {
                 .stroke(.separator.opacity(0.25), lineWidth: 1)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(identifier)
     }
 }

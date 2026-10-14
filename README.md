@@ -31,7 +31,7 @@ Requirements: Xcode 16.4+, Swift 6, and an iOS 17+ simulator. Xcode 26 enables t
 open Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj
 ```
 
-Run the `LiveActivityDemo` scheme, open a recipe, and press **Start**. Move through the lifecycle timeline to update the real system presentation. The demo restores an active session after app relaunch and prevents duplicate activities.
+Run the `LiveActivityDemo` scheme, open a recipe, and press **Start**. Move through the lifecycle timeline to update the real system presentation. The demo restores a compatible active session after app relaunch and prevents duplicate activities. Browsing or opening a widget link changes the preview only. State actions update the matching session; to switch recipes, **End** the running session and then **Start** the new one.
 
 The checked-in project is ready to open. To reproduce it with the pinned XcodeGen version:
 
@@ -112,7 +112,7 @@ xcodebuild \
   build
 ```
 
-The release matrix and recorded simulator evidence are in [Docs/RELEASE-0.1.0.md](Docs/RELEASE-0.1.0.md).
+The current candidate's measured evidence and pending physical-device gates are in [Docs/VERIFICATION-0.1.1.md](Docs/VERIFICATION-0.1.1.md). [0.1.1-rc.1 release notes](Docs/RELEASE-0.1.1.md) describe the changes. Historical illustrations and screenshots have [separate provenance](Assets/Screenshots/PROVENANCE.md).
 
 ## Repository map
 
@@ -123,7 +123,8 @@ Tests/LiveActivityKitTests/  public package behavior
 Examples/LiveActivityDemo/
   LiveActivityDemo/          Activity Lab and recoverable local lifecycle
   LiveActivityDemoWidgets/   real ActivityConfiguration and Dynamic Island
-  LiveActivityDemoTests/     routing and lifecycle policy tests
+  LiveActivityDemoTests/     controller interleaving, routing and budget tests
+  LiveActivityDemoUITests/   system URL and simulator lifecycle scenarios
   Shared/                    app-owned attributes, scenarios, and routes
 
 Docs/                        integration, customization, migration, and release notes

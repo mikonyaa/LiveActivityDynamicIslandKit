@@ -44,17 +44,12 @@ public struct LiveActivityMinimalView: View {
         ZStack {
             Circle()
                 .stroke(model.accent.color.opacity(0.28), lineWidth: 2.5)
-            Circle()
-                .trim(from: 0, to: model.progress.fraction)
-                .stroke(
-                    model.accent.color,
-                    style: StrokeStyle(lineWidth: 2.5, lineCap: .round)
-                )
-                .rotationEffect(.degrees(-90))
+            LiveActivityProgressArc(progress: model.progress, color: model.accent.color, lineWidth: 2.5)
             Image(systemName: model.symbolName)
                 .font(.system(size: 9, weight: .bold))
                 .foregroundStyle(model.accent.color)
         }
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(model.accessibilitySummary)
     }
 }

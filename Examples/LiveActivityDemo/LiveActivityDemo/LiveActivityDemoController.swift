@@ -1,313 +1,328 @@
-@preconcurrency import ActivityKit
+import ActivityKit
 import Foundation
 import LiveActivityKit
 import SwiftUI
 
+enum DemoRouteSource {
+    case user, restoration
+}
+
 @MainActor
 @Observable
 final class LiveActivityDemoController {
-    var selectedScenario: LiveActivityScenario = .delivery
-    var selectedStateIndex = 0
+    private(set) var selectedScenario: LiveActivityScenario = .delivery
+    private(set) var selectedStateIndex = 0
+    var navigationPath: [LiveActivityScenario] = []
     var message: DemoMessage?
+    private(set) var routeFeedback: DemoMessage?
     private(set) var lifecycle: LiveActivityDemoLifecycle = .idle
+    private(set) var activeSession: DemoActivitySession?
+    private(set) var liveActivitiesEnabled: Bool
 
-    private var activeActivity: Activity<LiveActivityAttributes>?
-    private var stateObserver: Task<Void, Never>?
-    private var updateRequestedWhileBusy = false
+    @ObservationIgnored private let adapter: any LiveActivityDemoAdapter
+    @ObservationIgnored private var stateObserver: Task<Void, Never>?
+    @ObservationIgnored private var authorizationObserver: Task<Void, Never>?
+    @ObservationIgnored private var generation = UUID()
+    @ObservationIgnored private var isDraining = false
+    @ObservationIgnored private var pendingUpdate: ActivityContent<LiveActivityAttributes.ContentState>?
+    @ObservationIgnored private var pendingEnd: ActivityContent<LiveActivityAttributes.ContentState>?
+    @ObservationIgnored private var terminalRequested = false
+    private var previewWasSelected = false
+    private var restoredPreview: LiveActivityContentModel?
+    private var sessionIsCompatible = true
 
-    var recipes: [LiveActivityRecipe] {
-        LiveActivityRecipes.all
+    init(adapter: any LiveActivityDemoAdapter = SystemLiveActivityDemoAdapter()) {
+        self.adapter = adapter
+        liveActivitiesEnabled = adapter.areActivitiesEnabled
     }
 
-    var selectedRecipe: LiveActivityRecipe {
-        LiveActivityRecipes.recipe(for: selectedScenario)
-    }
-
-    var currentModel: LiveActivityContentModel {
-        LiveActivityRecipes.state(for: selectedScenario, index: selectedStateIndex)
-    }
-
-    var canMoveBackward: Bool {
-        selectedStateIndex > 0
-    }
-
-    var canMoveForward: Bool {
-        selectedStateIndex < selectedRecipe.states.count - 1
-    }
-
-    var liveActivitiesEnabled: Bool {
-        ActivityAuthorizationInfo().areActivitiesEnabled
-    }
-
-    var canStartActivity: Bool { lifecycle.canStart && liveActivitiesEnabled }
-    var canUpdateActivity: Bool { lifecycle.canUpdate }
-    var canEndActivity: Bool { lifecycle.canEnd }
-
-    func restoreSession() async {
-        guard liveActivitiesEnabled else {
-            lifecycle = .unavailable
-            activeActivity = nil
-            return
-        }
-
-        guard let activity = Activity<LiveActivityAttributes>.activities.first else {
-            lifecycle = .idle
-            activeActivity = nil
-            return
-        }
-
-        activeActivity = activity
-        _ = apply(
-            scenario: activity.attributes.scenario,
-            stateID: activity.content.state.model.id
-        )
-        lifecycle = lifecycle(for: activity.activityState)
-        observe(activity)
-        message = DemoMessage(
-            title: "Live Activity restored",
-            detail: "This session was recovered from ActivityKit after the app relaunched.",
-            style: .success
-        )
-    }
-
-    func select(_ scenario: LiveActivityScenario) {
-        withTransaction(Transaction(animation: nil)) {
-            selectedScenario = scenario
-            selectedStateIndex = 0
-        }
-        Task { await updateActivity() }
-    }
-
-    func nextState() {
-        guard canMoveForward else { return }
-        selectedStateIndex += 1
-        Task { await updateActivity() }
-    }
-
-    func previousState() {
-        guard canMoveBackward else { return }
-        selectedStateIndex -= 1
-        Task { await updateActivity() }
-    }
-
-    func reset() {
-        selectedStateIndex = 0
-        message = nil
-        Task { await updateActivity() }
-    }
-
-    func startActivity() async {
-        guard lifecycle.canStart, !lifecycle.isBusy else { return }
-        guard liveActivitiesEnabled else {
-            lifecycle = .unavailable
-            message = DemoMessage(
-                title: "Live Activities are disabled",
-                detail: "Enable Live Activities in Settings to test the real system surface.",
-                style: .warning
-            )
-            return
-        }
-
-        if let existing = Activity<LiveActivityAttributes>.activities.first {
-            activeActivity = existing
-            lifecycle = lifecycle(for: existing.activityState)
-            observe(existing)
-            message = DemoMessage(
-                title: "Live Activity already running",
-                detail: "The existing session was restored instead of creating a duplicate.",
-                style: .success
-            )
-            return
-        }
-
-        lifecycle = .starting
-        message = nil
-        do {
-            let model = currentModel.liveTimelineSnapshot()
-            let attributes = LiveActivityAttributes(
-                scenario: selectedScenario,
-                activityID: model.id
-            )
-            let activity = try Activity.request(
-                attributes: attributes,
-                content: activityContent(for: model),
-                pushType: nil
-            )
-            activeActivity = activity
-            lifecycle = .active
-            observe(activity)
-            message = DemoMessage(
-                title: "Live Activity running",
-                detail: "Go Home or lock the simulator to see the system Dynamic Island and Lock Screen surfaces.",
-                style: .success
-            )
-        } catch {
-            lifecycle = .failed(error.localizedDescription)
-            message = DemoMessage(
-                title: "Could not start Live Activity",
-                detail: error.localizedDescription,
-                style: .warning
-            )
-        }
-    }
-
-    func updateActivity() async {
-        guard activeActivity != nil else { return }
-        if lifecycle == .updating {
-            updateRequestedWhileBusy = true
-            return
-        }
-        guard lifecycle.canUpdate else { return }
-
-        repeat {
-            updateRequestedWhileBusy = false
-            guard let activeActivity else { return }
-            lifecycle = .updating
-            await activeActivity.update(activityContent(for: currentModel.liveTimelineSnapshot()))
-        } while updateRequestedWhileBusy && self.activeActivity != nil
-
-        if activeActivity != nil {
-            lifecycle = .active
-        }
-    }
-
-    func endActivity(showMessage: Bool = true) async {
-        guard let activeActivity, lifecycle.canEnd, !lifecycle.isBusy else { return }
-        lifecycle = .ending
-        await activeActivity.end(
-            activityContent(for: currentModel.liveTimelineSnapshot(), staleDate: nil),
-            dismissalPolicy: .after(Date().addingTimeInterval(30))
-        )
-        self.activeActivity = nil
+    deinit {
         stateObserver?.cancel()
-        stateObserver = nil
-        lifecycle = .ended
+        authorizationObserver?.cancel()
+    }
 
-        if showMessage {
-            message = DemoMessage(
-                title: "Live Activity ended",
-                detail: "The final state remains briefly based on the dismissal policy.",
-                style: .success
-            )
+    var recipes: [LiveActivityRecipe] { LiveActivityRecipes.all }
+    var selectedRecipe: LiveActivityRecipe { LiveActivityRecipes.recipe(for: selectedScenario) }
+    var currentModel: LiveActivityContentModel {
+        restoredPreview ?? LiveActivityRecipes.state(for: selectedScenario, index: selectedStateIndex)
+    }
+    var canMoveBackward: Bool { selectedStateIndex > 0 }
+    var canMoveForward: Bool { selectedStateIndex < selectedRecipe.states.count - 1 }
+    var canStartActivity: Bool {
+        activeSession == nil && lifecycle.canStart && liveActivitiesEnabled && !isDraining
+    }
+    var canUpdateActivity: Bool {
+        activeSession?.attributes.scenario == selectedScenario && sessionIsCompatible &&
+            liveActivitiesEnabled && lifecycle.canUpdate && !terminalRequested
+    }
+    var canEndActivity: Bool { activeSession != nil && !terminalRequested }
+
+}
+
+extension LiveActivityDemoController {
+    func restoreSession() async {
+        observeAuthorization()
+        receiveAuthorization(adapter.areActivitiesEnabled)
+        guard !isDraining else { return }
+        let ongoing = adapter.sessions.filter { $0.state != .ended && $0.state != .dismissed }
+        let candidate = ongoing.first(where: { $0.id == activeSession?.id }) ?? ongoing.sorted { $0.id < $1.id }.first
+        guard let candidate else {
+            if activeSession != nil {
+                finishSession()
+            } else if lifecycle != .ended {
+                lifecycle = liveActivitiesEnabled ? .idle : .unavailable
+            }
+            return
         }
+        install(candidate)
+        sessionIsCompatible = validIdentity(candidate)
+        guard sessionIsCompatible else {
+            lifecycle = .failed("This session has an unknown or incompatible scenario/state. End it before starting a new recipe.")
+            message = nil
+            return
+        }
+        if !previewWasSelected {
+            _ = applyRoute(
+                LiveActivityDemoRoute(scenario: candidate.attributes.scenario, stateID: candidate.content.state.model.id),
+                source: .restoration
+            )
+            restoredPreview = candidate.content.state.model
+        }
+        lifecycle = lifecycle(for: candidate.state)
+        message = nil
     }
 
-    func handle(url: URL) {
-        guard let route = LiveActivityDemoRoute(url: url) else { return }
-        guard apply(scenario: route.scenario, stateID: route.stateID) else { return }
-        Task { await updateActivity() }
-    }
+    func reconcileForeground() async { await restoreSession() }
 
-    func selectState(at index: Int) {
-        guard selectedRecipe.states.indices.contains(index) else { return }
-        selectedStateIndex = index
-        Task { await updateActivity() }
-    }
-
-    private func activityContent(
-        for model: LiveActivityContentModel,
-        staleDate: Date? = nil
-    ) -> ActivityContent<LiveActivityAttributes.ContentState> {
-        ActivityContent(
-            state: LiveActivityAttributes.ContentState(model: model),
-            staleDate: staleDate ?? model.timeline.estimatedEnd
-        )
+    /// Browsing is independent of the immutable identity of the system session.
+    func select(_ scenario: LiveActivityScenario) {
+        guard let first = LiveActivityRecipes.recipe(for: scenario).firstState else { return }
+        _ = applyRoute(LiveActivityDemoRoute(scenario: scenario, stateID: first.id))
     }
 
     @discardableResult
-    private func apply(scenario: LiveActivityScenario, stateID: String) -> Bool {
-        guard let index = LiveActivityRecipes.stateIndex(for: scenario, stateID: stateID) else {
+    func applyRoute(_ route: LiveActivityDemoRoute, source: DemoRouteSource = .user) -> Bool {
+        guard let index = LiveActivityRecipes.stateIndex(for: route.scenario, stateID: route.stateID) else {
+            routeFeedback = DemoMessage(title: "Unknown recipe state", detail: "The link does not identify one of this demo's snapshots.", style: .warning)
             return false
         }
         withTransaction(Transaction(animation: nil)) {
-            selectedScenario = scenario
+            selectedScenario = route.scenario
             selectedStateIndex = index
+            restoredPreview = nil
+            navigationPath = [route.scenario]
+            previewWasSelected = source == .user
+            routeFeedback = nil
+            message = nil
         }
         return true
     }
 
-    private func observe(_ activity: Activity<LiveActivityAttributes>) {
-        stateObserver?.cancel()
-        stateObserver = Task { [weak self] in
-            for await state in activity.activityStateUpdates {
-                guard !Task.isCancelled else { return }
-                self?.receive(state)
+    @discardableResult
+    func handle(url: URL) -> Bool {
+        guard let route = LiveActivityDemoRoute(url: url) else {
+            routeFeedback = DemoMessage(title: "Invalid activity link", detail: "The scenario URL is malformed or incomplete.", style: .warning)
+            return false
+        }
+        return applyRoute(route)
+    }
+
+    func nextState() {
+        guard canMoveForward else { return }
+        selectState(at: selectedStateIndex + 1)
+    }
+
+    func previousState() {
+        guard canMoveBackward else { return }
+        selectState(at: selectedStateIndex - 1)
+    }
+
+    func reset() { selectState(at: 0) }
+
+    func selectState(at index: Int) {
+        guard selectedRecipe.states.indices.contains(index) else { return }
+        selectedStateIndex = index
+        restoredPreview = nil
+        previewWasSelected = true
+        message = nil
+        routeFeedback = nil
+        enqueueUpdate(for: currentModel.liveTimelineSnapshot())
+        Task { await drain() }
+    }
+
+    func startActivity() async {
+        observeAuthorization()
+        receiveAuthorization(adapter.areActivitiesEnabled)
+        guard canStartActivity else { return }
+        if adapter.sessions.contains(where: { $0.state != .ended && $0.state != .dismissed }) {
+            await restoreSession()
+            return
+        }
+        lifecycle = .starting
+        message = nil
+        let scenario = selectedScenario
+        let model = currentModel.liveTimelineSnapshot()
+        do {
+            let session = try adapter.request(
+                attributes: LiveActivityAttributes(scenario: scenario, activityID: model.id),
+                content: activityContent(for: model)
+            )
+            install(session)
+            sessionIsCompatible = true
+            lifecycle = lifecycle(for: session.state)
+        } catch {
+            lifecycle = .failed(error.localizedDescription)
+        }
+    }
+
+    func updateActivity() async {
+        enqueueUpdate(for: currentModel.liveTimelineSnapshot())
+        await drain()
+    }
+
+    private func enqueueUpdate(for model: LiveActivityContentModel) {
+        guard let session = activeSession, session.attributes.scenario == selectedScenario,
+              sessionIsCompatible, liveActivitiesEnabled, !terminalRequested,
+              lifecycle.canUpdate || lifecycle == .updating else { return }
+        pendingUpdate = activityContent(for: model)
+    }
+
+    func endActivity(showMessage: Bool = true) async {
+        guard let session = activeSession, !terminalRequested else { return }
+        terminalRequested = true
+        let finalModel = sessionIsCompatible && session.attributes.scenario == selectedScenario
+            ? currentModel.liveTimelineSnapshot() : session.content.state.model
+        // Explicit nil is separate from the update content's default deadline.
+        pendingEnd = activityContent(for: finalModel, staleDate: nil)
+        pendingUpdate = nil
+        message = nil
+        lifecycle = .ending
+        await drain()
+    }
+
+    private func drain() async {
+        guard !isDraining else { return }
+        isDraining = true
+        defer { isDraining = false }
+        while let session = activeSession {
+            let token = generation
+            do {
+                if let end = pendingEnd {
+                    pendingEnd = nil
+                    try await adapter.end(id: session.id, content: end)
+                    guard generation == token else { return }
+                    finishSession()
+                    return
+                }
+                guard !terminalRequested, let update = pendingUpdate else { return }
+                pendingUpdate = nil
+                lifecycle = .updating
+                try await adapter.update(id: session.id, content: update)
+                guard generation == token, activeSession?.id == session.id else { return }
+                activeSession?.content = update
+                if !terminalRequested {
+                    lifecycle = lifecycle(for: activeSession?.state ?? .active)
+                }
+            } catch {
+                guard generation == token else { return }
+                if terminalRequested && pendingEnd != nil { continue }
+                pendingUpdate = nil
+                terminalRequested = false
+                lifecycle = .failed(error.localizedDescription)
+                return
             }
         }
     }
 
-    // ActivityState gained `pending` in the iOS 26 SDK, so the case is compiled
-    // only when the matching Swift toolchain is available.
-    private func receive(_ state: ActivityState) {
-        let reportedLifecycle = lifecycle(for: state)
-        if !(lifecycle.isBusy && reportedLifecycle == .active) {
-            lifecycle = reportedLifecycle
+    private func activityContent(for model: LiveActivityContentModel) -> ActivityContent<LiveActivityAttributes.ContentState> {
+        activityContent(for: model, staleDate: model.timeline.estimatedEnd)
+    }
+
+    private func activityContent(
+        for model: LiveActivityContentModel, staleDate: Date?
+    ) -> ActivityContent<LiveActivityAttributes.ContentState> {
+        ActivityContent(state: .init(model: model), staleDate: staleDate)
+    }
+
+    private func validIdentity(_ session: DemoActivitySession) -> Bool {
+        let scenario = session.attributes.scenario
+        return LiveActivityRecipes.stateIndex(for: scenario, stateID: session.attributes.activityID) != nil &&
+            LiveActivityRecipes.stateIndex(for: scenario, stateID: session.content.state.model.id) != nil
+    }
+
+    private func install(_ session: DemoActivitySession) {
+        if activeSession?.id != session.id {
+            stateObserver?.cancel()
+            generation = UUID()
+            terminalRequested = false
+            pendingUpdate = nil
+            pendingEnd = nil
+            let token = generation
+            let stream = adapter.states(for: session.id)
+            stateObserver = Task { [weak self] in
+                for await state in stream {
+                    guard !Task.isCancelled else { return }
+                    self?.receive(state, id: session.id, token: token)
+                }
+            }
         }
-        switch state {
-        case .ended, .dismissed:
-            activeActivity = nil
-            stateObserver = nil
-        case .active:
-            break
-        case .stale:
-            break
-#if compiler(>=6.2)
-        case .pending:
-            break
-#endif
-        @unknown default:
-            break
+        activeSession = session
+    }
+
+    private func finishSession() {
+        stateObserver?.cancel()
+        stateObserver = nil
+        generation = UUID()
+        activeSession = nil
+        pendingUpdate = nil
+        pendingEnd = nil
+        terminalRequested = false
+        message = nil
+        lifecycle = .ended
+    }
+
+    private func receive(_ state: DemoActivityState, id: String, token: UUID) {
+        guard generation == token, activeSession?.id == id else { return }
+        activeSession?.state = state
+        if state == .ended || state == .dismissed {
+            finishSession()
+        } else if !isDraining && !terminalRequested && sessionIsCompatible {
+            lifecycle = lifecycle(for: state)
+            message = nil
         }
     }
 
-    private func lifecycle(for state: ActivityState) -> LiveActivityDemoLifecycle {
+    private func lifecycle(for state: DemoActivityState) -> LiveActivityDemoLifecycle {
         switch state {
-        case .active:
-            .active
-        case .stale:
-            .active
-#if compiler(>=6.2)
-        case .pending:
-            .starting
-#endif
-        case .ended, .dismissed:
-            .ended
-        @unknown default:
-            .idle
+        case .active: .active
+        case .stale: .stale
+        case .pending: .starting
+        case .ended, .dismissed: .ended
+        case .unknown: .failed("The system reported an unsupported activity state. End this session before starting another.")
         }
     }
-}
 
-extension LiveActivityDemoController {
-    var statusMessage: DemoMessage {
-        if let message { return message }
-        switch lifecycle {
-        case .unavailable:
-            return DemoMessage(
-                title: "Live Activities unavailable",
-                detail: "Enable Live Activities in Settings to test the system surfaces.",
-                style: .warning
-            )
-        case .active:
-            return DemoMessage(
-                title: "Live Activity running",
-                detail: "Change the timeline below, then check the Lock Screen or Dynamic Island.",
-                style: .success
-            )
-        case .starting, .updating, .ending:
-            return DemoMessage(
-                title: "Applying lifecycle change",
-                detail: "ActivityKit is updating the system presentation.",
-                style: .neutral
-            )
-        case .failed(let detail):
-            return DemoMessage(title: "ActivityKit error", detail: detail, style: .warning)
-        case .idle, .ended:
-            return DemoMessage(
-                title: "Ready for local preview",
-                detail: "Choose a recipe, press Start, then check the Lock Screen or Dynamic Island.",
-                style: .neutral
-            )
+    private func observeAuthorization() {
+        guard authorizationObserver == nil else { return }
+        let stream = adapter.enablementUpdates()
+        authorizationObserver = Task { [weak self] in
+            for await enabled in stream {
+                guard !Task.isCancelled else { return }
+                self?.receiveAuthorization(enabled)
+            }
         }
+    }
+
+    private func receiveAuthorization(_ enabled: Bool) {
+        liveActivitiesEnabled = enabled
+        if activeSession == nil && !isDraining {
+            if !enabled {
+                lifecycle = .unavailable
+            } else if lifecycle == .unavailable {
+                lifecycle = .idle
+                message = nil
+            }
+        }
+        if !enabled { pendingUpdate = nil }
     }
 }

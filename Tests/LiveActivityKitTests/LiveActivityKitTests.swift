@@ -34,13 +34,16 @@ struct LiveActivityKitTests {
         #expect(decoded.fraction == 1)
     }
 
-    @Test("Live timeline snapshots keep ActivityKit content fresh")
-    func liveTimelineSnapshotKeepsActivityFresh() {
+    @Test("Timeline snapshots rebase the planned presentation duration")
+    func liveTimelineSnapshotRebasesPresentation() {
         let now = Date(timeIntervalSinceReferenceDate: 900_000_000)
-        let snapshot = makeModel().liveTimelineSnapshot(now: now)
+        let model = makeModel()
+        let snapshot = model.liveTimelineSnapshot(now: now)
 
         #expect(snapshot.timeline.startedAt == now)
-        #expect(snapshot.timeline.estimatedEnd > now)
+        #expect(snapshot.timeline.estimatedEnd == now.addingTimeInterval(1_200))
+        #expect(snapshot.timeline.remainingText == model.timeline.remainingText)
+        #expect(model.timeline.startedAt != now)
     }
 
     @Test("Timeline never ends before it starts")

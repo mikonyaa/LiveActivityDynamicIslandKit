@@ -63,10 +63,10 @@ targets:
     settings:
       base:
         CODE_SIGN_STYLE: Automatic
-        CURRENT_PROJECT_VERSION: "1"
+        CURRENT_PROJECT_VERSION: "2"
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: LiveActivityDemo/Info.plist
-        MARKETING_VERSION: "0.1.0"
+        MARKETING_VERSION: "0.1.1"
         PRODUCT_BUNDLE_IDENTIFIER: dev.liquidglasstemplates.liveactivity.demo
         PRODUCT_NAME: "$(TARGET_NAME)"
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
@@ -77,6 +77,7 @@ targets:
       gatherCoverageData: false
       testTargets:
         - LiveActivityDemoTests
+        - LiveActivityDemoUITests
 
   LiveActivityDemoWidgets:
     type: app-extension
@@ -100,10 +101,10 @@ targets:
       base:
         APPLICATION_EXTENSION_API_ONLY: YES
         CODE_SIGN_STYLE: Automatic
-        CURRENT_PROJECT_VERSION: "1"
+        CURRENT_PROJECT_VERSION: "2"
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: LiveActivityDemoWidgets/Info.plist
-        MARKETING_VERSION: "0.1.0"
+        MARKETING_VERSION: "0.1.1"
         PRODUCT_BUNDLE_IDENTIFIER: dev.liquidglasstemplates.liveactivity.demo.widgets
         PRODUCT_NAME: "$(TARGET_NAME)"
         SKIP_INSTALL: YES
@@ -122,5 +123,19 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: dev.liquidglasstemplates.liveactivity.demo.tests
+        SUPPORTED_PLATFORMS: iphonesimulator
+        TARGETED_DEVICE_FAMILY: "1,2"
+
+  LiveActivityDemoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: LiveActivityDemoUITests
+    dependencies:
+      - target: LiveActivityDemo
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: dev.liquidglasstemplates.liveactivity.demo.uitests
         SUPPORTED_PLATFORMS: iphonesimulator
         TARGETED_DEVICE_FAMILY: "1,2"

@@ -17,8 +17,11 @@ struct LiveActivityDemoRoute: Equatable, Sendable {
               url.pathComponents.count == 2,
               let scenario = LiveActivityScenario(rawValue: url.pathComponents[1]),
               let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let stateID = components.queryItems?
-                .first(where: { $0.name == "state" })?
+              components.user == nil, components.password == nil, components.port == nil,
+              components.fragment == nil,
+              let queryItems = components.queryItems, queryItems.count == 1,
+              queryItems[0].name == "state",
+              let stateID = queryItems[0]
                 .value?
                 .trimmingCharacters(in: .whitespacesAndNewlines),
               !stateID.isEmpty

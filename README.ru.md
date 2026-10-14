@@ -34,3 +34,12 @@ https://github.com/mikonyaa/LiveActivityDynamicIslandKit.git
 App-specific `ActivityAttributes`, routing и lifecycle остаются в твоём приложении; package отвечает только за модель представления и reusable SwiftUI surfaces.
 
 Каноническая и наиболее полная документация — [README.md](README.md).
+
+
+## Проверка кандидата 0.1.1-rc.1
+
+Просмотр другой recipe и widget URL меняют только preview. State actions обновляют Activity с соответствующим scenario; для смены сначала нажми **End**, затем **Start**. Контроллер сохраняет End во время update, проверяет identity при restore и восстанавливает доступность после возвращения из Settings.
+
+[Результаты проверки и внешние gates](Docs/VERIFICATION-0.1.1.md) различают fake-adapter, hosted SwiftUI и настоящие system calls в симуляторе. Проверки на физических iPhone, фактический VoiceOver и permission Settings остаются отдельной приёмкой. [Release notes](Docs/RELEASE-0.1.1.md) и [происхождение изображений](Assets/Screenshots/PROVENANCE.md) не приписывают embedded previews свойства system capture.
+
+`liveTimelineSnapshot` — rebasing helper для заранее заданных demo snapshots, не настоящий бизнес-таймер. App adapter проверяет общий бюджет 4 KB для attributes + content и возвращает понятную ошибку без обрезки строк; rendering package сохраняет свободу внешней модели.

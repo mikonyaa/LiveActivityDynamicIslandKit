@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1-rc.1
+
+- Fixed preview/session identity, typed widget-route navigation, terminal End priority, observer lifetime, authorization recovery and system status precedence.
+- Added a minimal app-owned ActivityKit adapter, deterministic controller interleaving tests, actual simulator UI scenarios and payload budget validation.
+- Improved accessible progress/time/route composition, consistent unknown-progress rendering and timeline mutation bounds without changing Codable keys.
+- Added independent external public API consumers and compatibility/current SDK CI with actual SemVer tag triggers and evidence uploads.
+- Documented asset provenance and explicit pending physical-device acceptance. See [release notes](Docs/RELEASE-0.1.1.md).
+
 ## 0.1.0
 
 - Added reusable, domain-neutral Lock Screen and Dynamic Island SwiftUI surfaces.

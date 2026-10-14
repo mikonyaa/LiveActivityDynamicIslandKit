@@ -51,18 +51,33 @@ public struct LiveActivityContentModel: Codable, Hashable, Identifiable, Sendabl
     }
 
     public var accessibilitySummary: String {
-        [
+        var included = Set<String>()
+        return [
             accessibilityTitle,
             title,
             subtitle,
             primaryValue,
             secondaryValue,
+            progress.label,
+            progress.formattedPercentage ?? "",
+            timeline.remainingText,
+            leadingLabel,
+            trailingLabel,
             footnote
         ]
-        .filter { !$0.isEmpty }
+        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        .filter {
+            let key = $0.split(whereSeparator: \.isWhitespace).joined(separator: " ")
+                .lowercased()
+                .replacingOccurrences(of: " %", with: "%")
+                .replacingOccurrences(of: " ٪", with: "٪")
+            return !$0.isEmpty && included.insert(key).inserted
+        }
         .joined(separator: ". ")
     }
 
+    /// Rebases a presentation snapshot to `now` while retaining its planned duration.
+    /// This demo helper does not track elapsed business time or update a real deadline.
     public func liveTimelineSnapshot(
         now: Date = Date(),
         minimumDuration: TimeInterval = 90
@@ -83,8 +98,15 @@ public struct LiveActivityContentModel: Codable, Hashable, Identifiable, Sendabl
 
 public struct LiveActivityProgress: Codable, Hashable, Sendable {
     public private(set) var fraction: Double
+    /// App-provided, localized progress text. Use a status such as "Waiting" when the fraction is unknown.
     public var label: String
+    /// When true, every progress surface ignores `fraction` and presents an unknown amount.
     public var isIndeterminate: Bool
+
+    var determinateFraction: Double? { isIndeterminate ? nil : fraction }
+    var formattedPercentage: String? {
+        determinateFraction?.formatted(.percent.precision(.fractionLength(0)))
+    }
 
     public init(
         fraction: Double,
@@ -126,8 +148,16 @@ public struct LiveActivityProgress: Codable, Hashable, Sendable {
 }
 
 public struct LiveActivityTimeline: Codable, Hashable, Sendable {
-    public var startedAt: Date
-    public var estimatedEnd: Date
+    public var startedAt: Date {
+        didSet {
+            if estimatedEnd < startedAt { estimatedEnd = startedAt }
+        }
+    }
+    public var estimatedEnd: Date {
+        didSet {
+            if estimatedEnd < startedAt { estimatedEnd = startedAt }
+        }
+    }
     public var remainingText: String
 
     public init(

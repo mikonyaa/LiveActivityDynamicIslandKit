@@ -51,22 +51,23 @@ public struct LiveActivityProgressRing: View {
     }
 
     public var body: some View {
-        ZStack {
+        let ring = ZStack {
             Circle()
                 .stroke(palette.separator.opacity(0.75), lineWidth: lineWidth)
-            Circle()
-                .trim(from: 0, to: progress.isIndeterminate ? 0.72 : progress.fraction)
-                .stroke(
-                    palette.accent,
-                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
-                )
-                .rotationEffect(.degrees(-90))
+            LiveActivityProgressArc(progress: progress, color: palette.accent, lineWidth: lineWidth)
             Text(progress.label)
                 .font(.caption.weight(.bold))
                 .minimumScaleFactor(0.7)
                 .foregroundStyle(palette.primaryText)
         }
-        .accessibilityLabel(progress.isIndeterminate ? progress.label : "\(Int(progress.fraction * 100)) percent")
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(progress.label)
+
+        if let percentage = progress.formattedPercentage {
+            ring.accessibilityValue(percentage)
+        } else {
+            ring
+        }
     }
 }
 
@@ -85,20 +86,16 @@ public struct LiveActivityRouteLine: View {
     public var body: some View {
         HStack(spacing: 10) {
             label(model.leadingLabel, filled: true)
-            GeometryReader { proxy in
-                ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(palette.separator.opacity(0.85))
-                        .frame(height: 4)
-                    Capsule()
-                        .fill(palette.accent)
-                        .frame(width: max(12, proxy.size.width * model.progress.fraction), height: 4)
-                }
-                .frame(maxHeight: .infinity)
-            }
+            LiveActivityProgressTrack(
+                progress: model.progress,
+                color: palette.accent,
+                backgroundColor: palette.separator.opacity(0.85),
+                minimumWidth: 12
+            )
             .frame(height: 16)
             label(model.trailingLabel, filled: false)
         }
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(model.leadingLabel) to \(model.trailingLabel), \(model.progress.label)")
     }
 
@@ -132,18 +129,65 @@ public struct LiveActivityIslandProgressLine: View {
     }
 
     public var body: some View {
+        LiveActivityProgressTrack(
+            progress: model.progress,
+            color: palette.accent,
+            backgroundColor: Color.white.opacity(0.32),
+            minimumWidth: 14
+        )
+        .frame(height: 8)
+        .accessibilityLabel(model.progress.label)
+    }
+}
+
+struct LiveActivityProgressArc: View {
+    var progress: LiveActivityProgress
+    var color: Color
+    var lineWidth: CGFloat
+
+    var body: some View {
+        Group {
+            if let fraction = progress.determinateFraction {
+                Circle()
+                    .trim(from: 0, to: fraction)
+                    .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+            } else {
+                Circle()
+                    .stroke(
+                        color,
+                        style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, dash: [lineWidth, lineWidth * 2])
+                    )
+            }
+        }
+        .rotationEffect(.degrees(-90))
+    }
+}
+
+struct LiveActivityProgressTrack: View {
+    var progress: LiveActivityProgress
+    var color: Color
+    var backgroundColor: Color
+    var minimumWidth: CGFloat
+
+    var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .leading) {
                 Capsule()
-                    .fill(Color.white.opacity(0.32))
+                    .fill(backgroundColor)
                     .frame(height: 4)
-                Capsule()
-                    .fill(palette.accent)
-                    .frame(width: max(14, proxy.size.width * model.progress.fraction), height: 4)
+                if let fraction = progress.determinateFraction {
+                    Capsule()
+                        .fill(color)
+                        .frame(width: min(proxy.size.width, max(minimumWidth, proxy.size.width * fraction)), height: 4)
+                } else {
+                    Path { path in
+                        path.move(to: CGPoint(x: 0, y: proxy.size.height / 2))
+                        path.addLine(to: CGPoint(x: proxy.size.width, y: proxy.size.height / 2))
+                    }
+                    .stroke(color, style: StrokeStyle(lineWidth: 4, lineCap: .round, dash: [2, 6]))
+                }
             }
             .frame(maxHeight: .infinity)
         }
-        .frame(height: 8)
-        .accessibilityLabel(model.progress.label)
     }
 }

@@ -1,0 +1,162 @@
+{
+  "baselineSHA": "f577568f466136e28da427e55aa639170fafbac6",
+  "packageTests": 17,
+  "demoTests": 25,
+  "uiTestsPerSimulator": 4,
+  "physicalDeviceAcceptance": "pending",
+  "localSDK": "Xcode 27.0 / Swift 6.4",
+  "sourceInputsSHA256": {
+    "Package.swift": "3c26ba912af42270e9e677f4927f6274e9fa39e5e4a80d855c3d8962c2281716",
+    ".github/workflows/ci.yml": "b0ae3ff573462f0e4a865dffa95d87167562dc10a278de3e3142f8a62100f654",
+    "Examples/LiveActivityDemo/project.yml": "78780ea878d3af2cac340e9e3bafbab1f429c3b3bbcde6af0a25193491d185df",
+    "Examples/LiveActivityDemo/LiveActivityDemo.xcodeproj/project.pbxproj": "719dd47a316fb782dfba14b36b0557bffd6eb0a7328a80e5e0c0e698e0074166",
+    "Sources/LiveActivityKit/Models/LiveActivityContentModel.swift": "51fead3bb41539d40f2edda81903df9c39de167003baa50fa6308c06fbb91e65",
+    "Sources/LiveActivityKit/Models/LiveActivityPresentation.swift": "db3aa2f2b1d145026133b1f886e6582d1d10fb996b6f05cafb4185520d77c0c5",
+    "Sources/LiveActivityKit/Models/LiveActivityTheme.swift": "efeb3f1eb759b8f26bb20e9bec50f409677de2102bb66700daeb55d56978cd6e",
+    "Sources/LiveActivityKit/Views/LiveActivityIslandViews.swift": "2a81333a0a4e1cd7aa83ec0ff26572e16c3012af57fbee244711d2d66c32bcf5",
+    "Sources/LiveActivityKit/Views/LiveActivityLockScreenCard.swift": "877dc61dea234c71fc63cd40a272db2ae0defa8d31756847af780c61650abc8e",
+    "Sources/LiveActivityKit/Views/LiveActivityPreviewPanel.swift": "a47d371ef0803ca7b762a277d7da4369450b492b2d2e9af6dff3d40cffceac8a",
+    "Sources/LiveActivityKit/Views/LiveActivityStatusPill.swift": "653ddd544322aa853c41ff03a3f2c605a35751e5e2a6ce9f42765920adfb11b3",
+    "Tests/LiveActivityKitTests/LiveActivityKitTests.swift": "7f4257af84660e17bd26833aad24ba8965bea4500d530928452eac25d4a79ee9",
+    "Tests/LiveActivityKitTests/ModelContractTests.swift": "6d9f1e03652a6bb6547dfa3dd8d50a1e4c0f1cac969bb17fa9839a5219b5c4ec",
+    "Examples/LiveActivityDemo/LiveActivityDemo/DemoRootView.swift": "e7075117d501615bddc39add429dc547d1bdf926eba7c7f5d93e7e75013df348",
+    "Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityDemoAdapter.swift": "69960048ca918cbfd4110c2692f4a716c222030898ba55a490dcc6da5787b93d",
+    "Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityDemoApp.swift": "fe91b9249685e01090a9c6e5611ea9c2f101882812995eaf8fe2d4e6ae7d276e",
+    "Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityDemoController.swift": "0b65f8060478a6ce5f6d1bc2f628a812425cf05507cb275fea142984748cee36",
+    "Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityDemoLifecycle.swift": "d5c6d228c837eacc91bf1ad069170127bc7d228216b330f7be82529bb04169aa",
+    "Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityDemoStatus.swift": "aacf7b708b83fc6e13fe667cfdb8d12dd8f535efff5e9b4688ef6fe725d42aa4",
+    "Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityRecipe.swift": "eed71ad37ab2fad66da68057b44842630949f3f879ac9460232de2d9fa093a75",
+    "Examples/LiveActivityDemo/LiveActivityDemo/LiveActivityRecipeData.swift": "2008f175d8387d9bc45624daab2f0b0fadb677a002a841097aeed66c7b3bb86b",
+    "Examples/LiveActivityDemo/LiveActivityDemo/ScenarioDetailView.swift": "3279aa57d94002547ef9d8a214dff49f5c0d6b4ade1d3c35526c3ed188eea33d",
+    "Examples/LiveActivityDemo/LiveActivityDemo/ScenarioGalleryView.swift": "1d40d55dea71154965e5aaac81aadcb04f08db487cdea1ce82868005d35d9ed8",
+    "Examples/LiveActivityDemo/LiveActivityDemoTests/FakeLiveActivityAdapter.swift": "cea838b1eb6645b35a6c71226127d8ae27668dc913f90cdb6d485d29e1ffa7cc",
+    "Examples/LiveActivityDemo/LiveActivityDemoTests/LiveActivityControllerTests.swift": "8899c81a229ab9b2b18a049d95068a27ddd0f3aed0e452a8d01054061379fe8a",
+    "Examples/LiveActivityDemo/LiveActivityDemoTests/LiveActivityDemoTests.swift": "d5d2d0b7877841d8e1a7ca0a0d112ba77107643bfffd6fd4105cf00711bc9716",
+    "Examples/LiveActivityDemo/LiveActivityDemoTests/LiveActivityPayloadTests.swift": "b48f017b345c5d7144102b90c109df089aab2b915024520d4d5b3cc61501530b",
+    "Examples/LiveActivityDemo/LiveActivityDemoTests/LiveActivityRegressionTests.swift": "f5bb837d8c12e8e4704d0c283f1faba062fcfb4e2c2968931621976f6ce59339",
+    "Examples/LiveActivityDemo/LiveActivityDemoUITests/LiveActivityDemoUITests.swift": "a4725041bfcffe374288ba4f338f630ba90aab6295d2e86b906164c05faf97c1",
+    "Examples/LiveActivityDemo/LiveActivityDemoWidgets/LiveActivityDemoWidgets.swift": "2c3515445e8306dd0f9acfee96835162a67499c8ee37d21aeddc6b51130d8dc1",
+    "Examples/LiveActivityDemo/Shared/LiveActivityAttributes.swift": "c9c6f17e8c680da50ba2d5b765d74b4fcf47e780d60a7fda4bb716607b0a87b6",
+    "Examples/LiveActivityDemo/Shared/LiveActivityDemoRoute.swift": "15c59923b9cf7a40a3126a6e2ef6a51d836c2c0df4f389f2a3f729fed120b3a6",
+    "Examples/LiveActivityDemo/Shared/LiveActivityScenario.swift": "7fda3ef743788d5ff917fe68fd175ad2a495a022971e85f128638a50cabc6c20"
+  },
+  "simulatorResults": {
+    "rc-ios27-summary.json": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "D52A6620-296C-4432-9347-CDD761AF7CBD",
+            "deviceName": "LiveActivity RC 20261014",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 29,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "LiveActivityDemo \u00b7 Built with macOS 26.7.1",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1791994818.018,
+      "passedTests": 29,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1791994681.03,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - LiveActivityDemo",
+      "topInsights": [],
+      "totalTestCount": 29
+    },
+    "rc-ios26_5-summary.json": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "6E543615-7960-4C7A-843D-85B023BAC4EB",
+            "deviceName": "LiveActivity RC 26.5 20261014",
+            "modelName": "iPhone 16",
+            "osBuildNumber": "23F77",
+            "osVersion": "26.5",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 29,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "LiveActivityDemo \u00b7 Built with macOS 26.7.1",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1791995080.944,
+      "passedTests": 29,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1791994969.993,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - LiveActivityDemo",
+      "topInsights": [],
+      "totalTestCount": 29
+    }
+  },
+  "externalConsumers": {
+    "local": {
+      "completedAt": "2026-10-14T16:02:40.109838+00:00",
+      "exitCode": 0,
+      "mode": "local",
+      "stage": "complete"
+    },
+    "remote": {
+      "completedAt": "2026-10-14T15:55:46.776057+00:00",
+      "exitCode": 0,
+      "mode": "remote",
+      "stage": "complete"
+    }
+  },
+  "otherChecks": {
+    "strictSwiftLint": {
+      "exitCode": 0,
+      "files": 32,
+      "violations": 0
+    },
+    "genericSimulatorBuild": {
+      "exitCode": 0
+    },
+    "unsignedReleaseDeviceBuild": {
+      "exitCode": 0,
+      "deviceExecution": false
+    },
+    "actionlint": {
+      "version": "1.7.12",
+      "exitCode": 0
+    }
+  },
+  "interruptedRuns": [
+    {
+      "log": "rc-ios27.log",
+      "outcome": "unexpected UI exit / scene-create watchdog; interrupted failed runner; excluded from pass counts"
+    },
+    {
+      "log": "rc-ios27-retry.log",
+      "exitCode": 65,
+      "outcome": "cancelled while a previous runner was being terminated; excluded from pass counts"
+    }
+  ]
+}

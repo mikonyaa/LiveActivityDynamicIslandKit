@@ -37,6 +37,8 @@ Each view accepts a model and either the adaptive Porcelain theme or an app-defi
 
 ## Demo app
 
-The demo app is a local control surface. It lets you pick a scenario, start the Live Activity, move between states, restore an active session after relaunch, and end the activity. Its explicit lifecycle states prevent overlapping mutations and duplicate starts.
+The demo app is a local control surface. It lets you pick a scenario, start the Live Activity, move between states, restore an active session after relaunch, and end the activity. Preview selection and navigation path are separate from the system session snapshot and its immutable attributes. One route entry point validates the recipe ID and changes the visible preview/path atomically. Explicit state actions capture content before queueing; opening another URL cannot replace a pending update's payload.
+
+`LiveActivityDemoAdapter` exposes the app-owned request/update/end boundary and state/enablement streams. The production adapter uses ActivityKit; tests control external timing through a fake. A single drain coalesces updates, gives End terminal priority and checks the session generation after every await. Observer tasks are cancelled when the session or controller lifetime ends. Foreground restore refreshes system content until a user explicitly selects a preview. Rejected links have separate feedback without hiding lifecycle/permission status.
 
 The WidgetKit extension contains the real `ActivityConfiguration` used by the system.

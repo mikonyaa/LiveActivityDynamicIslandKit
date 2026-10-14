@@ -25,10 +25,13 @@ struct ScenarioGalleryView: View {
 
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(controller.recipes) { recipe in
-                    NavigationLink(value: recipe.scenario) {
+                    Button {
+                        controller.select(recipe.scenario)
+                    } label: {
                         ScenarioCard(recipe: recipe)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("recipe-\(recipe.scenario.rawValue)")
                 }
             }
         }

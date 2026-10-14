@@ -1,6 +1,8 @@
 # 0.1.0 release record
 
-Release candidate verified on July 13, 2026. This record contains simulator evidence only and makes no physical-device claim.
+Historical release-author record dated July 13, 2026. The claims below belong to that release record; raw capture provenance is not retained in this file and they are not fresh RC validation. See [0.1.1 verification](VERIFICATION-0.1.1.md) for current measured evidence and pending gates.
+
+Release candidate reported verified on July 13, 2026. This record contains simulator evidence only and makes no physical-device claim.
 
 ## Automated gates
 

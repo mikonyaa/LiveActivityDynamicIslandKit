@@ -47,10 +47,16 @@ The demo controller shows the local lifecycle:
 - `activity.update(...)`
 - `activity.end(...)`
 
-Before sending content to ActivityKit, convert static/demo timeline data into a live snapshot. `LiveActivityContentModel.liveTimelineSnapshot()` resets `startedAt` to the current time and keeps `staleDate` in the future. If `staleDate` is already in the past, iOS can create the activity and immediately mark it stale, which makes the Dynamic Island and Lock Screen surfaces look like they did not start.
+The demo's `liveTimelineSnapshot()` rebases the planned duration of a fixed recipe snapshot to now. Use it only for deterministic demo snapshots. An application with a real deadline should send that deadline unchanged and derive its own remaining text; the helper is not a business timer.
 
-For production, move lifecycle work into a small service or actor that owns the active activity handle. Restore existing sessions from `Activity<YourAttributes>.activities`, serialize mutations, and prevent duplicate starts. The package does not prescribe that service because its lifetime and update source are app-specific.
+The demo's small `LiveActivityDemoAdapter` protocol stays in the app layer. Its production implementation calls ActivityKit and observes activity state plus authorization enablement. The controller retains fixed session attributes, accepts terminal End during an update, coalesces subsequent updates and rejects events from old observation generations. Browsing and URLs only select previews; state actions can update a matching session. Explicitly End the current scenario before starting another.
+
+Restore validates scenario and both state identifiers. Unknown identity is visible as an error and can still be ended. The system may mark content stale, end or dismiss it independently of the business event. Always reconcile after foregrounding and keep status subordinate to permission/system transitions.
+
+Static attributes and dynamic content must fit Apple's combined **4 KB** limit. The demo adapter encodes both values and preflights 4096 bytes for request/update/end, returning `DemoActivityError.payloadTooLarge(bytes:)` without truncating strings. Budget checks belong to the integrating app; the pure rendering API imposes no arbitrary string cap. Leave margin for your own metadata and validate real ActivityKit requests as well.
+
+Applications supply localized progress and remaining-time labels. The composed summary includes numeric progress only when determinate, remaining text and route labels, removing duplicate fragments. Apply an app-provided SwiftUI accessibility override if its wording needs domain-specific localization. Public timeline setters normalize invalid date bounds.
 
 ## 6. Verify system behavior
 
-The simulator supports repeatable layout, lifecycle, Lock Screen, Dynamic Island, deep-link, color-scheme, and accessibility checks. Before shipping a production app to customers, also validate on every supported hardware class because notification settings and system state differ from a simulator.
+Use simulator system calls for repeatable integration checks and embedded previews for rendering checks. Neither proves physical VoiceOver speech, hardware clipping or Settings behavior. The [RC verification record](VERIFICATION-0.1.1.md) lists concrete physical-device gates and separates every evidence level.

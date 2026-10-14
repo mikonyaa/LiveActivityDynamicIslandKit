@@ -6,6 +6,7 @@ enum LiveActivityDemoLifecycle: Equatable, Sendable {
     case idle
     case starting
     case active
+    case stale
     case updating
     case ending
     case ended
@@ -30,12 +31,12 @@ enum LiveActivityDemoLifecycle: Equatable, Sendable {
     }
 
     var canUpdate: Bool {
-        self == .active
+        self == .active || self == .stale
     }
 
     var canEnd: Bool {
         switch self {
-        case .active, .updating:
+        case .active, .stale, .updating:
             true
         default:
             false

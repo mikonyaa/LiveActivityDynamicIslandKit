@@ -13,6 +13,9 @@ struct ScenarioDetailView: View {
                 ScenarioOverview(scenario: scenario, model: controller.currentModel)
                 ActivityStatusCard(message: controller.statusMessage)
                     .transaction { $0.animation = nil }
+                if let feedback = controller.routeFeedback {
+                    ActivityStatusCard(message: feedback, identifier: "route-feedback")
+                }
                 surfaceLab
                 stateTimeline
                 DemoLifecycleNote()
@@ -26,10 +29,6 @@ struct ScenarioDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             controlDock
-        }
-        .onAppear {
-            guard controller.selectedScenario != scenario else { return }
-            controller.select(scenario)
         }
     }
 
@@ -45,6 +44,7 @@ struct ScenarioDetailView: View {
                 }
                 Spacer()
                 Text("\(controller.selectedStateIndex + 1)/\(controller.selectedRecipe.states.count)")
+                    .accessibilityIdentifier("selected-state-index")
                     .font(.caption.weight(.bold))
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
@@ -134,6 +134,7 @@ struct ScenarioDetailView: View {
                             }
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("state-\(state.id)")
                     }
                 }
             }
@@ -285,7 +286,8 @@ private struct ScenarioOverview: View {
 private struct DemoLifecycleNote: View {
     var body: some View {
         Label {
-            Text("Start creates a real local ActivityKit session. State changes update the system UI; End uses a 30-second dismissal window.")
+            Text("Start creates a local ActivityKit session. Browsing and links only change previews. " +
+                 "State actions update the matching session. End the current session before starting another recipe.")
         } icon: {
             Image(systemName: "info.circle")
         }

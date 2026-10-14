@@ -1,0 +1,19 @@
+// swift-tools-version: 6.0
+
+import PackageDescription
+
+let package = Package(
+    name: "FileTransferConsumer",
+    platforms: [.iOS(.v17), .macOS(.v14)],
+    dependencies: [
+        .package(path: __LOCAL_PACKAGE_PATH__)
+    ],
+    targets: [
+        .executableTarget(
+            name: "ConsumerProbe",
+            dependencies: [
+                .product(name: "LiveActivityKit", package: __LOCAL_PACKAGE_IDENTITY__)
+            ]
+        )
+    ]
+)

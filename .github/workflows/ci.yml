@@ -7,11 +7,18 @@ on:
       - main
       - "release/**"
     tags:
-      - "v*"
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+-*"
+      - "v[0-9]+.[0-9]+.[0-9]+-*"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+defaults:
+  run:
+    shell: bash
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,40 +31,8 @@ env:
   XCODEGEN_VERSION: "2.45.4"
 
 jobs:
-  fast:
-    name: PR · current
-    if: github.event_name == 'pull_request'
-    runs-on: macos-26
-    timeout-minutes: 20
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_26.5.app/Contents/Developer
-    steps:
-      - uses: actions/checkout@v4
-      - name: Ensure SwiftLint
-        run: command -v swiftlint >/dev/null || brew install swiftlint
-      - name: Test package
-        run: swift test
-      - name: Lint
-        run: swiftlint lint --strict
-      - name: Build demo
-        run: |
-          xcodebuild \
-            -project "$DEMO_PROJECT" \
-            -scheme "$DEMO_SCHEME" \
-            -destination "$DEMO_DESTINATION" \
-            CODE_SIGNING_ALLOWED=NO \
-            build
-      - name: Test demo policies
-        run: |
-          xcodebuild test \
-            -project "$DEMO_PROJECT" \
-            -scheme "$DEMO_SCHEME" \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
-            CODE_SIGNING_ALLOWED=NO
-
   full:
     name: Full · ${{ matrix.name }}
-    if: github.event_name != 'pull_request'
     strategy:
       fail-fast: false
       matrix:
@@ -65,39 +40,64 @@ jobs:
           - name: compatibility
             runner: macos-15
             developer_dir: /Applications/Xcode_16.4.app/Contents/Developer
+            test_destination: "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.5"
           - name: current
             runner: macos-26
             developer_dir: /Applications/Xcode_26.5.app/Contents/Developer
+            test_destination: "platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5"
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       DEVELOPER_DIR: ${{ matrix.developer_dir }}
     steps:
       - uses: actions/checkout@v4
+      - name: Record toolchain and revision
+        run: |
+          mkdir -p "$RUNNER_TEMP/ci-evidence"
+          {
+            git rev-parse HEAD
+            sw_vers
+            swift --version
+            xcodebuild -version
+            xcodebuild -showsdks
+          } 2>&1 | tee "$RUNNER_TEMP/ci-evidence/tools.log"
       - name: Ensure SwiftLint
-        run: command -v swiftlint >/dev/null || brew install swiftlint
+        run: |
+          command -v swiftlint >/dev/null || brew install swiftlint
+          swiftlint --version | tee "$RUNNER_TEMP/ci-evidence/swiftlint-version.log"
       - name: Test package
-        run: swift test
+        run: swift test 2>&1 | tee "$RUNNER_TEMP/ci-evidence/swift-test.log"
       - name: Lint
-        run: swiftlint lint --strict
+        run: swiftlint lint --strict 2>&1 | tee "$RUNNER_TEMP/ci-evidence/swiftlint.log"
+      - name: Build external exact 0.1.0 consumer
+        run: bash Tools/check-external-consumer.sh remote "$RUNNER_TEMP/consumer-remote"
+      - name: Build external local RC consumer
+        run: bash Tools/check-external-consumer.sh local "$RUNNER_TEMP/consumer-local"
       - name: Build demo
         run: |
           xcodebuild \
             -project "$DEMO_PROJECT" \
             -scheme "$DEMO_SCHEME" \
             -destination "$DEMO_DESTINATION" \
+            -resultBundlePath "$RUNNER_TEMP/ci-evidence/demo-build.xcresult" \
             CODE_SIGNING_ALLOWED=NO \
-            build
-      - name: Test demo policies
-        if: matrix.name == 'current'
+            build 2>&1 | tee "$RUNNER_TEMP/ci-evidence/demo-build.log"
+      - name: Record demo destinations
+        run: |
+          xcodebuild \
+            -project "$DEMO_PROJECT" \
+            -scheme "$DEMO_SCHEME" \
+            -showdestinations 2>&1 | tee "$RUNNER_TEMP/ci-evidence/demo-destinations.log"
+      - name: Test demo policies, controller, and UI
         run: |
           xcodebuild test \
             -project "$DEMO_PROJECT" \
             -scheme "$DEMO_SCHEME" \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
-            CODE_SIGNING_ALLOWED=NO
+            -destination '${{ matrix.test_destination }}' \
+            -parallel-testing-enabled NO \
+            -resultBundlePath "$RUNNER_TEMP/ci-evidence/demo-tests.xcresult" \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/ci-evidence/demo-tests.log"
       - name: Install pinned XcodeGen
-        if: matrix.name == 'current'
         run: |
           curl --fail --location --silent --show-error \
             "https://github.com/yonaskolb/XcodeGen/releases/download/${XCODEGEN_VERSION}/xcodegen.zip" \
@@ -105,8 +105,8 @@ jobs:
           unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP/xcodegen"
           echo "$RUNNER_TEMP/xcodegen/xcodegen/bin" >> "$GITHUB_PATH"
       - name: Reproduce checked-in project
-        if: matrix.name == 'current'
         run: |
+          xcodegen --version | tee "$RUNNER_TEMP/ci-evidence/xcodegen-version.log"
           test "$(xcodegen --version | awk '{print $2}')" = "$XCODEGEN_VERSION"
           demo_dir="$(dirname "$DEMO_PROJECT")"
           (
@@ -115,12 +115,20 @@ jobs:
           )
           git diff --exit-code -- "$DEMO_PROJECT/project.pbxproj"
       - name: Check documentation links
-        if: matrix.name == 'current'
         run: |
           ruby -e 'Dir["**/*.md"].each { |file| File.read(file).scan(/\[[^\]]*\]\(([^)]+)\)/).flatten.each { |link| next if link.start_with?("http", "#", "mailto:"); path = link.split("#", 2).first.delete_prefix("<").delete_suffix(">"); next if path.empty?; abort("Missing #{path} from #{file}") unless File.exist?(File.expand_path(path, File.dirname(file))) } }'
       - name: Check repository hygiene
-        if: matrix.name == 'current'
         run: |
           if git ls-files | grep -E '(^|/)(\.DS_Store|Thumbs\.db|xcuserdata|DerivedData|\.build)(/|$)|\.(xcuserstate|xccheckout)$'; then
             exit 1
           fi
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-evidence-${{ matrix.name }}-${{ github.sha }}
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/ci-evidence
+            ${{ runner.temp }}/consumer-remote/evidence
+            ${{ runner.temp }}/consumer-local/evidence

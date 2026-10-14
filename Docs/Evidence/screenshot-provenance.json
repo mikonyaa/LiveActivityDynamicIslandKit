@@ -1,0 +1,68 @@
+{
+  "sourceResultBundle": "rc-ios27-serial.xcresult",
+  "platform": "iOS Simulator",
+  "model": "iPhone 18 Pro",
+  "os": "27.0",
+  "attachments": [
+    {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D52A6620-296C-4432-9347-CDD761AF7CBD",
+      "deviceName": "LiveActivity RC 20261014",
+      "exportedFileName": "8C12188B-04DA-460D-8241-80A6CEC063E9.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "accessibility-xxxl-transfer-app-preview_0_C02609CB-7614-490F-80DD-54E8B722E3F6.png",
+      "timestamp": 1791994733.487,
+      "testName": "LiveActivityDemoUITests/testAccessibilityDynamicTypePreview()",
+      "repositoryFile": "Assets/Screenshots/RC-0.1.1/accessibility-xxxl-transfer-app-preview.png",
+      "sha256": "3ab4b8861b85ea506143b64313a91069b168270be148c8da3d085b7c9607f47a"
+    },
+    {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D52A6620-296C-4432-9347-CDD761AF7CBD",
+      "deviceName": "LiveActivity RC 20261014",
+      "exportedFileName": "3B2105FC-BAF7-4D4F-9ED9-F29E50D13DEA.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "warm-sports-2-app-preview_0_4C67C660-532D-43CF-9B77-62B532299FB3.png",
+      "timestamp": 1791994742.935,
+      "testName": "LiveActivityDemoUITests/testColdWarmAndRepeatedSystemURLs()",
+      "repositoryFile": "Assets/Screenshots/RC-0.1.1/warm-sports-2-app-preview.png",
+      "sha256": "f9461c0a11603d13e4d7d5752634629a817312d289eee47423b4066bb7648599"
+    },
+    {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D52A6620-296C-4432-9347-CDD761AF7CBD",
+      "deviceName": "LiveActivity RC 20261014",
+      "exportedFileName": "FD2BCFD0-F4E3-454D-9908-606103BCD164.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "ended-session-app-status_0_764F818C-981A-4B4B-8068-AC778061DD86.png",
+      "timestamp": 1791994811.156,
+      "testName": "LiveActivityDemoUITests/testRealLocalActivityLifecycleAndRelaunch()",
+      "repositoryFile": "Assets/Screenshots/RC-0.1.1/ended-session-app-status.png",
+      "sha256": "c0eb4f6af912bfff474336e345333d08182c44eafe4607698ab11daa8439858f"
+    },
+    {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D52A6620-296C-4432-9347-CDD761AF7CBD",
+      "deviceName": "LiveActivity RC 20261014",
+      "exportedFileName": "1857A030-C318-46D3-85C9-643244FBC884.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "restored-delivery-2-app-preview_0_4B545FD4-5C45-4B0D-A2C6-EBB7A49E1FCD.png",
+      "timestamp": 1791994801.795,
+      "testName": "LiveActivityDemoUITests/testRealLocalActivityLifecycleAndRelaunch()",
+      "repositoryFile": "Assets/Screenshots/RC-0.1.1/restored-delivery-2-app-preview.png",
+      "sha256": "c923956745e4f552da808358e43279d50c523994d866e8e6c7e17acdc94624bb"
+    },
+    {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D52A6620-296C-4432-9347-CDD761AF7CBD",
+      "deviceName": "LiveActivity RC 20261014",
+      "exportedFileName": "5ADB52EC-0CC8-4EFB-B72E-62E2D25F521D.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "system-home-active-delivery-2_0_2A85F6DD-632A-43E4-8933-52078409E7A2.png",
+      "timestamp": 1791994792.791,
+      "testName": "LiveActivityDemoUITests/testRealLocalActivityLifecycleAndRelaunch()",
+      "repositoryFile": "Assets/Screenshots/RC-0.1.1/system-home-active-delivery-2.png",
+      "sha256": "b2d8af8b2cbd69c5c808ce302544f10aa7da0d555f29822d601bce5341e906fb"
+    }
+  ]
+}
