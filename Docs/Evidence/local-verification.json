@@ -158,5 +158,16 @@
       "exitCode": 65,
       "outcome": "cancelled while a previous runner was being terminated; excluded from pass counts"
     }
-  ]
+  ],
+  "sourceInputsScope": "Initial RC source at 8ca1aa0e570818f9eba547a0b0f9930f6266f603; post-CI fixture/project changes are measured separately in the release publication evidence.",
+  "initialBranchCI": {
+    "runID": 38598257169,
+    "headSHA": "8ca1aa0e570818f9eba547a0b0f9930f6266f603",
+    "conclusion": "failure",
+    "overallPass": false,
+    "fixes": [
+      "Use system URL open for cold and warm routing; check all 24 cold pairs",
+      "Stable relative package alias across checkout names; exclude alias from lint traversal"
+    ]
+  }
 }

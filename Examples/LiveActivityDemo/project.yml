@@ -13,7 +13,8 @@ configs:
 
 packages:
   LiveActivityDynamicIslandKit:
-    path: ../..
+    # The relative alias keeps navigator labels stable across checkout names.
+    path: LiveActivityDynamicIslandKit
 
 settings:
   base:

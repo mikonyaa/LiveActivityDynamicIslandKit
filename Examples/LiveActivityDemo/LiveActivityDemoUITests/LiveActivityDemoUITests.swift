@@ -5,7 +5,7 @@ final class LiveActivityDemoUITests: XCTestCase {
     func testColdWarmAndRepeatedSystemURLs() throws {
         let app = XCUIApplication()
         app.terminate()
-        app.open(try XCTUnwrap(URL(string: "liveactivitydemo://scenario/delivery?state=delivery-3")))
+        XCUIDevice.shared.system.open(try XCTUnwrap(URL(string: "liveactivitydemo://scenario/delivery?state=delivery-3")))
         XCTAssertTrue(app.navigationBars["Delivery"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts["Nearby"].firstMatch.exists)
         let sportsURL = try XCTUnwrap(URL(string: "liveactivitydemo://scenario/sports?state=sports-2"))
@@ -28,11 +28,20 @@ final class LiveActivityDemoUITests: XCTestCase {
         for (scenario, title) in scenarios {
             for index in 1...4 {
                 let url = try XCTUnwrap(URL(string: "liveactivitydemo://scenario/\(scenario)?state=\(scenario)-\(index)"))
+                app.terminate()
                 XCUIDevice.shared.system.open(url)
                 XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 10))
                 XCTAssertEqual(app.staticTexts["selected-state-index"].label, "\(index)/4")
+                XCUIDevice.shared.system.open(url)
+                XCTAssertEqual(app.staticTexts["selected-state-index"].label, "\(index)/4")
+                XCUIDevice.shared.system.open(url)
+                XCTAssertEqual(app.staticTexts["selected-state-index"].label, "\(index)/4")
+                app.navigationBars.buttons.element(boundBy: 0).tap()
+                XCTAssertTrue(app.navigationBars["Activity Lab"].waitForExistence(timeout: 5))
             }
         }
+        XCUIDevice.shared.system.open(try XCTUnwrap(URL(string: "liveactivitydemo://scenario/trip?state=trip-4")))
+        XCTAssertTrue(app.navigationBars["Trip"].waitForExistence(timeout: 5))
         XCUIDevice.shared.system.open(try XCTUnwrap(URL(string: "liveactivitydemo://scenario/ride/extra?state=ride-2")))
         XCTAssertTrue(app.navigationBars["Trip"].exists)
         XCTAssertEqual(app.staticTexts["selected-state-index"].label, "4/4")

@@ -78,7 +78,6 @@
 		1ADABB43C821FA9DFDBEEA95 /* LiveActivityDemoTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LiveActivityDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F2C679BB5E9C958F122BF03 /* ScenarioGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioGalleryView.swift; sourceTree = "<group>"; };
 		23A7C4D7F37D0C249F2A4B70 /* LiveActivityRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityRegressionTests.swift; sourceTree = "<group>"; };
-		2BB74298C5D374A532BEC2F8 /* repo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = repo; path = ../..; sourceTree = SOURCE_ROOT; };
 		39C0FF0753CD55C293A1F78E /* LiveActivityDemoLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoLifecycle.swift; sourceTree = "<group>"; };
 		421207ECF4F2DE9CA79D59A2 /* LiveActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityAttributes.swift; sourceTree = "<group>"; };
 		4695F06558E1F0EE06CD2493 /* LiveActivityDemoRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoRoute.swift; sourceTree = "<group>"; };
@@ -97,6 +96,7 @@
 		CF2D2864FE77DF558F2DAB49 /* LiveActivityControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityControllerTests.swift; sourceTree = "<group>"; };
 		D489A2912D7FDB8A6945690E /* LiveActivityScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityScenario.swift; sourceTree = "<group>"; };
 		D57BD7753BA16F607FEAE0ED /* LiveActivityDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityDemoUITests.swift; sourceTree = "<group>"; };
+		DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LiveActivityDynamicIslandKit; path = LiveActivityDynamicIslandKit; sourceTree = SOURCE_ROOT; };
 		E25EA41B56C40ACE57997FC5 /* LiveActivityDemoUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LiveActivityDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF4E79DAE30FF6D343B2B8BF /* LiveActivityRecipeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityRecipeData.swift; sourceTree = "<group>"; };
 		FC102A58C84818D72F43502C /* LiveActivityDemoWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LiveActivityDemoWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,7 +168,7 @@
 		8F735F39DB326CFAF2D47CCB /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				2BB74298C5D374A532BEC2F8 /* repo */,
+				DC7E7BF11239C75FAD144457 /* LiveActivityDynamicIslandKit */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -327,7 +327,7 @@
 			mainGroup = DA2AA14788B6B720B4FC7335;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				6DFD68B907560EEE8CB5B1CD /* XCLocalSwiftPackageReference "../.." */,
+				64FA6B3FE555EB8C19758234 /* XCLocalSwiftPackageReference "LiveActivityDynamicIslandKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8D1D942B49F596656E14FA1D /* Products */;
@@ -753,9 +753,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		6DFD68B907560EEE8CB5B1CD /* XCLocalSwiftPackageReference "../.." */ = {
+		64FA6B3FE555EB8C19758234 /* XCLocalSwiftPackageReference "LiveActivityDynamicIslandKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../..;
+			relativePath = LiveActivityDynamicIslandKit;
 		};
 /* End XCLocalSwiftPackageReference section */
 

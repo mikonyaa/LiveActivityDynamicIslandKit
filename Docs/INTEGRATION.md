@@ -4,6 +4,8 @@
 
 Use the Swift package or copy `Sources/LiveActivityKit` into your app. Link `LiveActivityKit` to both the app target and widget extension.
 
+The checked-in demo and XcodeGen 2.45.4 use the relative symbolic link `Examples/LiveActivityDemo/LiveActivityDynamicIslandKit` → `../..`. It points to this repository's root package and keeps the generated package reference identical when a checkout directory has a different name. Preserve the link when copying the whole demo. SwiftLint excludes this alias so it scans each source file once.
+
 If you copy the source, keep the folder split:
 
 ```text

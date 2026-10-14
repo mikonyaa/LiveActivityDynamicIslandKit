@@ -1,6 +1,7 @@
 excluded:
   - .build
   - .swiftpm
+  - Examples/LiveActivityDemo/LiveActivityDynamicIslandKit
 
 line_length:
   warning: 160
