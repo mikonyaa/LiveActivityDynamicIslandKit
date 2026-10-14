@@ -1,6 +1,7 @@
 import ActivityKit
 import Foundation
 import LiveActivityKit
+import Observation
 import Testing
 @testable import LiveActivityDemo
 
@@ -40,6 +41,39 @@ struct LiveActivityControllerTests {
         #expect(adapter.updates.count == 1)
         #expect(controller.lifecycle == .ended)
         #expect(!controller.canEndActivity)
+    }
+
+    @Test("Start availability notifies its view after a terminal event precedes End completion")
+    func startAvailabilityAfterEarlyTerminalEvent() async {
+        let adapter = FakeLiveActivityAdapter()
+        let controller = LiveActivityDemoController(adapter: adapter)
+        await controller.startActivity()
+        adapter.suspendEnd = true
+        let ending = Task { await controller.endActivity() }
+        await settle()
+        #expect(adapter.endings.count == 1)
+        adapter.emit(.ended)
+        await settle()
+        #expect(controller.lifecycle == .ended)
+        #expect(controller.activeSession == nil)
+        #expect(!controller.canStartActivity)
+
+        // Track only after terminal mutations, so they cannot satisfy this assertion.
+        let changes = AsyncStream<Void>.makeStream()
+        withObservationTracking {
+            _ = controller.canStartActivity
+        } onChange: {
+            changes.continuation.yield(())
+        }
+        adapter.releaseEnd()
+        await ending.value
+        changes.continuation.finish()
+        var changeCount = 0
+        for await _ in changes.stream { changeCount += 1 }
+        #expect(changeCount == 1)
+        #expect(controller.canStartActivity)
+        await controller.startActivity()
+        #expect(adapter.requests.count == 2)
     }
 
     @Test("Invalid ongoing content never reports successful restoration")

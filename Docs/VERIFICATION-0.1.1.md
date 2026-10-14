@@ -1,7 +1,7 @@
 # 0.1.1 release candidate verification
 
 Baseline: `f577568f466136e28da427e55aa639170fafbac6` (public `0.1.0`).
-This record separates controller fixtures, hosted rendering, simulator system calls, and physical-device acceptance. The final publication SHA, exact-SHA CI links, checksums and public consumer results are recorded in the [GitHub prerelease](https://github.com/mikonyaa/LiveActivityDynamicIslandKit/releases/tag/0.1.1-rc.1) and its `publication.json` asset.
+This record separates controller fixtures, hosted rendering, simulator system calls, and physical-device acceptance. The final publication SHA, exact-SHA CI links, checksums and public consumer results are recorded in the [GitHub prerelease](https://github.com/mikonyaa/LiveActivityDynamicIslandKit/releases/tag/0.1.1-rc.2) and its `publication.json` asset.
 
 ## Identity and ordering contract
 
@@ -20,7 +20,7 @@ Host toolchain: Apple Swift 6.4, Xcode 27.0 (`27A266a`), Swift tools 6.0, XcodeG
 
 Before fixes, six controller scenarios failed with ten assertions, and the ambiguous URL regression failed. A real cold/warm URL UI test failed against the old navigation implementation. The original six package tests passed; new model regressions then failed before their fixes.
 
-`swift test` passed 17 tests. The final demo suite contains 25 controller/route/payload tests and four simulator UI tests; both local iOS 27.0 and iOS 26.5 runs are retained with their actual completion status in the accompanying verification evidence. SwiftLint strict mode found zero violations. A generic simulator build and an unsigned Release device build passed. The unsigned build is suitable for selecting a team and signing in Xcode; it is not an installed-device test.
+`swift test` passed 17 tests. The final demo suite contains 26 controller/route/payload tests and four simulator UI tests; both local iOS 27.0 and iOS 26.5 runs are retained with their actual completion status in the accompanying verification evidence. SwiftLint strict mode found zero violations. A generic simulator build and an unsigned Release device build passed. The unsigned build is suitable for selecting a team and signing in Xcode; it is not an installed-device test.
 
 One iOS 27 repeat was interrupted after an unexpected UI test exit and a scene-create watchdog; the app's triggered stack was loading UIKit accessibility bundles through dyld. The failure log and extracted diagnostic are retained. This run is not counted as a pass. The first retry was cancelled by cleanup of a still-live previous runner; it is also excluded from passing evidence. After all earlier runners exited, the subsequent serial iOS 27 run passed all 29 demo/UI tests on the restarted task-owned simulator. Its stable Home attachment visibly shows the actual compact Dynamic Island; this does not certify other system sizes or physical hardware.
 
@@ -29,6 +29,8 @@ Final counts, exit codes, SDK/OS identifiers, logs, and `.xcresult` attachments 
 The UI target opens URLs through `XCUIDevice.shared.system.open`, including after terminating the app, rather than calling the parser directly. For every one of the six scenarios × four actual IDs, it checks cold entry, warm entry, repeated entry and one Back action returning to the gallery. It also checks a malformed URL without a false state change. The production adapter UI scenario exercises local Start, Update, app termination/relaunch, explicit scenario replacement and End. Screenshots attached to those tests preserve their provenance.
 
 The first branch CI at `8ca1aa0e570818f9eba547a0b0f9930f6266f603` failed and is not counted as an overall pass. Both SDK jobs passed package tests, app unit tests and external consumers; the current SDK also passed all four UI tests. Xcode 16.4's direct `XCUIApplication.open` cold-launch fixture did not display the route, although its warm system-open cases passed. The follow-up uses the same system-open API for cold and warm entry and expands cold coverage to all 24 pairs. The first CI also exposed a generated navigator reference dependent on the checkout's basename. A relative package alias now preserves the real local package reference and gives byte-identical XcodeGen 2.45.4 output across checkout names. Final rerun outcomes are retained separately in the release evidence.
+
+The complete branch CI at `3f1702708e87d617ee804c5d61791fca1a03a861` and its main CI passed both SDKs. A subsequent `0.1.1-rc.1` tag run exposed an additional UI interleaving on Xcode 16.4: the system's terminal event preceded completion of `end()`, leaving the Start button disabled. The draining flag influenced Start availability but was excluded from Observation. A deterministic held-End test registered observation after the terminal mutations and reproduced the missing notification (one failing assertion among 26 app tests). The flag is now observable; Start remains blocked until the in-flight operation completes, then its view is notified. The UI fixture waits for both button existence and enablement before replacement. This is a controller fix; the earlier passing runs do not negate that interleaving. Final `rc.2` evidence is scoped to its own source SHA.
 
 ## Integration and payloads
 
@@ -42,7 +44,7 @@ The app adapter validates JSON-encoded attributes plus content state against 409
 
 Timeline public setters normalize the end to at least the start. `liveTimelineSnapshot` rebases a deterministic snapshot's planned duration for this demo; it does not extend a real business deadline or implement a running timer. Timer recipes remain predefined snapshots.
 
-Expected SemVer category: patch (`0.1.1`), published first as `0.1.1-rc.1`.
+Expected SemVer category: patch (`0.1.1`), published as `0.1.1-rc.2`. The preceding `rc.1` tag remains as a superseded candidate without a GitHub Release.
 
 ## Remaining physical-device gates
 

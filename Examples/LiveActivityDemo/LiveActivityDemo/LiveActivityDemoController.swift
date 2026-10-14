@@ -23,7 +23,7 @@ final class LiveActivityDemoController {
     @ObservationIgnored private var stateObserver: Task<Void, Never>?
     @ObservationIgnored private var authorizationObserver: Task<Void, Never>?
     @ObservationIgnored private var generation = UUID()
-    @ObservationIgnored private var isDraining = false
+    private var isDraining = false
     @ObservationIgnored private var pendingUpdate: ActivityContent<LiveActivityAttributes.ContentState>?
     @ObservationIgnored private var pendingEnd: ActivityContent<LiveActivityAttributes.ContentState>?
     @ObservationIgnored private var terminalRequested = false

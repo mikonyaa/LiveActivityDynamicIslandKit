@@ -169,5 +169,26 @@
       "Use system URL open for cold and warm routing; check all 24 cold pairs",
       "Stable relative package alias across checkout names; exclude alias from lint traversal"
     ]
+  },
+  "supersededRC1": {
+    "sourceCommit": "3f1702708e87d617ee804c5d61791fca1a03a861",
+    "tag": "0.1.1-rc.1",
+    "branchCI": 38603222804,
+    "branchCIConclusion": "success",
+    "mainCI": 38606047373,
+    "mainCIConclusion": "success",
+    "tagCI": 38606051575,
+    "tagCompatibilityJobConclusion": "failure",
+    "issue": "Start view was not invalidated after an early terminal event followed by awaited End completion; internal draining flag was ObservationIgnored",
+    "releasePublished": false
+  },
+  "observationRegression": {
+    "redLog": "red-end-observation.log",
+    "appTests": 26,
+    "issues": 1,
+    "exitCode": 65,
+    "actualObservationNotifications": 0,
+    "expectedObservationNotifications": 1,
+    "finalRCCandidate": "0.1.1-rc.2"
   }
 }

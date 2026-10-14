@@ -83,8 +83,10 @@ final class LiveActivityDemoUITests: XCTestCase {
         app.buttons["End Live Activity"].tap()
         expectStatus("ended", in: app)
         capture("ended-session-app-status")
-        XCTAssertTrue(app.buttons["Start Live Activity"].isEnabled)
-        app.buttons["Start Live Activity"].tap()
+        let replacementStart = app.buttons["Start Live Activity"]
+        expectation(for: NSPredicate(format: "exists == true AND isEnabled == true"), evaluatedWith: replacementStart)
+        waitForExpectations(timeout: 10)
+        replacementStart.tap()
         expectStatus("running", in: app)
         app.buttons["End Live Activity"].tap()
         expectStatus("ended", in: app)

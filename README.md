@@ -112,7 +112,7 @@ xcodebuild \
   build
 ```
 
-The current candidate's measured evidence and pending physical-device gates are in [Docs/VERIFICATION-0.1.1.md](Docs/VERIFICATION-0.1.1.md). [0.1.1-rc.1 release notes](Docs/RELEASE-0.1.1.md) describe the changes. Historical illustrations and screenshots have [separate provenance](Assets/Screenshots/PROVENANCE.md).
+The current candidate's measured evidence and pending physical-device gates are in [Docs/VERIFICATION-0.1.1.md](Docs/VERIFICATION-0.1.1.md). [0.1.1-rc.2 release notes](Docs/RELEASE-0.1.1.md) describe the changes. Historical illustrations and screenshots have [separate provenance](Assets/Screenshots/PROVENANCE.md).
 
 ## Repository map
 

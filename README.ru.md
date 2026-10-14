@@ -36,7 +36,7 @@ App-specific `ActivityAttributes`, routing и lifecycle остаются в тв
 Каноническая и наиболее полная документация — [README.md](README.md).
 
 
-## Проверка кандидата 0.1.1-rc.1
+## Проверка кандидата 0.1.1-rc.2
 
 Просмотр другой recipe и widget URL меняют только preview. State actions обновляют Activity с соответствующим scenario; для смены сначала нажми **End**, затем **Start**. Контроллер сохраняет End во время update, проверяет identity при restore и восстанавливает доступность после возвращения из Settings.
 

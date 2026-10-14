@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.1.1-rc.1
+## 0.1.1-rc.2
+
+- Restore observable Start availability when the system ends a session before the app's awaited End operation returns; keep replacement serialized until completion.
 
 - Fixed preview/session identity, typed widget-route navigation, terminal End priority, observer lifetime, authorization recovery and system status precedence.
 - Added a minimal app-owned ActivityKit adapter, deterministic controller interleaving tests, actual simulator UI scenarios and payload budget validation.

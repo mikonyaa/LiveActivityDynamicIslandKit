@@ -11,11 +11,13 @@ final class FakeLiveActivityAdapter: LiveActivityDemoAdapter {
     var endings: [(String, ActivityContent<LiveActivityAttributes.ContentState>)] = []
     var requests: [DemoActivitySession] = []
     var suspendUpdates = false
+    var suspendEnd = false
     var updateError: DemoActivityError?
     var endError: DemoActivityError?
     var stateTerminations: [String: Int] = [:]
     var authorizationTerminations = 0
     private var heldUpdate: CheckedContinuation<Void, Never>?
+    private var heldEnd: CheckedContinuation<Void, Never>?
     private var stateContinuations: [String: AsyncStream<DemoActivityState>.Continuation] = [:]
     private var enablementContinuation: AsyncStream<Bool>.Continuation?
 
@@ -44,6 +46,9 @@ final class FakeLiveActivityAdapter: LiveActivityDemoAdapter {
     func end(id: String, content: ActivityContent<LiveActivityAttributes.ContentState>) async throws {
         if let endError { throw endError }
         endings.append((id, content))
+        if suspendEnd {
+            await withCheckedContinuation { heldEnd = $0 }
+        }
         sessions.removeAll { $0.id == id }
     }
 
@@ -81,5 +86,11 @@ final class FakeLiveActivityAdapter: LiveActivityDemoAdapter {
         heldUpdate?.resume()
         heldUpdate = nil
         suspendUpdates = false
+    }
+
+    func releaseEnd() {
+        heldEnd?.resume()
+        heldEnd = nil
+        suspendEnd = false
     }
 }
